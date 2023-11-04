@@ -113,7 +113,7 @@ int main(int argc, char *argv[]) {
     write(fd_ui, grid, strlen(grid) + 1);
     close(fd_ui);
 
-     struct CommandAdmin adminCommand;
+    struct CommandAdmin adminCommand;
     // Lógica para ler e validar comandos do administrador
     while (1) {
         // Ler comando e validar
@@ -132,10 +132,6 @@ int main(int argc, char *argv[]) {
             // Comando inválido
         }
     }
-
-    // Lógica principal do motor do jogo...
-    // Lógica para interação dos jogadores, detecção de colisões, condições de vitória, etc.
-    // ...
 
     free(grid);
 

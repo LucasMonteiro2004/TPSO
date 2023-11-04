@@ -70,10 +70,6 @@ void receiveMessageFromMotor() {
     close(fd);
 }
 
-void getCredentials(struct Credentials *credentials) {
-    // Lógica para receber as credenciais do utilizador
-}
-
 int validateCommand(struct Command *command) {
     // Lógica para validar os comandos
 }
