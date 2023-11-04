@@ -6,6 +6,7 @@
 #include <unistd.h>
 
 #include "jogoUI.h"
+#include "motor_jogo.h"
 
 #define GRID_WIDTH 80
 #define GRID_HEIGHT 30
@@ -111,9 +112,6 @@ int main(int argc, char *argv[]) {
     // Aguarda e recebe o labirinto do motor
     read(fd_ui, receivedGrid, sizeof(receivedGrid));
     close(fd_ui);
-
-    struct Credentials userCredentials;
-    getCredentials(&userCredentials);
 
     struct Command userCommand;
     // Lógica para ler comandos do utilizador e validá-los

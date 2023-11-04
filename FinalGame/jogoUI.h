@@ -26,7 +26,6 @@ struct Command {
 // Declarar outras estruturas de dados e constantes simbólicas necessárias
 void sendPlayerInfoToMotor(const char *playerName);
 void receiveMessageFromMotor();
-void getCredentials(struct Credentials *credentials);
 int validateCommand(struct Command *command);
 
 #endif

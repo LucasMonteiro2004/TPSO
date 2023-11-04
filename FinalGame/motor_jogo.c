@@ -1,10 +1,12 @@
 // motor_jogo.c
 #include "motor_jogo.h"
+#include "jogoUI.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
 #include <fcntl.h>
+#include <ncurses.h>
 
 int numMessagesOne;
 
@@ -69,6 +71,9 @@ int is_Fim(int x, int y, const char *grid) {
 
 int validateAdminCommand(struct CommandAdmin *adminCommand) {
     // Lógica para validar os comandos do administrador
+    // Implemente a lógica necessária para validar os comandos do administrador aqui
+    // Certifique-se de retornar um valor apropriado conforme a lógica de validação
+    return 1; // Ou 0, dependendo da validação
 }
 
 int main(int argc, char *argv[]) {
@@ -120,13 +125,6 @@ int main(int argc, char *argv[]) {
         // Exemplo de como chamar a função de validação:
         if (validateAdminCommand(&adminCommand)) {
             // Comando válido
-            if (strcmp(adminCommand.name, "test_bot") == 0) {
-                launchBot();
-                struct BotMessage messages[MAX_BOT_MESSAGES];
-                // Receber mensagens do bot
-                // Mostrar mensagens na tela
-                showBotMessages(messages, numMessagesOne);
-            }
             // Outros comandos administrativos...
         } else {
             // Comando inválido
