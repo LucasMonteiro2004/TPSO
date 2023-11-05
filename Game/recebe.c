@@ -7,6 +7,7 @@
 #include <fcntl.h>
 
 #define TAMANHO_MAX 3000
+char username[50];
 
 void leComandosUsuario() {
     char comando[TAMANHO_MAX];
@@ -20,12 +21,25 @@ void leComandosUsuario() {
     printf("Comando do usuario: %s\n", comando);
 }
 
-void receberCredenciais() {
+void receberCredenciais(username) {
     // Simulação de recebimento de credenciais
-    char username[50], password[50];
-    printf("Digite o nome de usuário: ");
-    scanf("%s", username);
-    printf("Credenciais recebidas: Usuario: %s\n", username);
+    int fd;
+    char *pipeNomeado = "/tmp/meu_pipe";
+
+    mkfifo(pipeNomeado, 0666);
+
+    int bytesRead = 0;
+
+    memset(username, 0, 50);
+
+    fd = open(pipeNomeado, O_WRONLY);
+    if (fd == -1) {
+        printf("Erro ao abrir o pipe para escrita!\n");
+        return;
+    }
+
+    write(fd, username, strlen(username));
+    close(fd);
 }
 
 void recebeLabirinto(){
@@ -62,7 +76,13 @@ void recebeLabirinto(){
     printf("%s\n", mensagem_recebida);
 }
 
-int main() {
+int main(int argc, char *argv[]) {
+    if(argc != 2){
+        printf("Por favor insira seu nome ./recebe <seunome>");
+    }
+
+
+
     recebeLabirinto();
 
     return 0;

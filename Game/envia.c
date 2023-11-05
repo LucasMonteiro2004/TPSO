@@ -79,12 +79,19 @@ void leComandosAdministrador() {
         scanf("%d %d %d", &x, &y, &duracao);
         printf("RECEBI: %d %d %d\n", x, y, duracao);
     } else {
-        printf("Comando inválido.\n");
+        printf("Comando invalido.\n");
     }
 }
 
 
-int main() {
+void inicializa(){
+    printf("\t\t\tMOTOR DE JOGO\n");
+    printf("============================================================\n");
+    printf("============================================================\n");
+}
+
+int main(int argc, char *argv[]) {
+    inicializa();
     enviaLabirinto();
 
     return 0;
