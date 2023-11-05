@@ -40,27 +40,6 @@ void enviaLabirinto() {
     fclose(file);
 }
 
-void recebeArgumento() {
-    int fd;
-    char *pipeNomeado1 = "/tmp/meu_pipe";
-
-    fd = open(pipeNomeado1, O_RDONLY);
-    if (fd == -1) {
-        printf("Erro ao abrir o pipe para leitura!\n");
-        return;
-    }
-
-    char argumento[50];
-
-    int bytesRead = write(fd, argumento, 50 - 1);
-    if (bytesRead == -1) {
-        printf("Erro ao ler do pipe!\n");
-        close(fd);
-        return;
-    }
-
-    close(fd);
-}
 
 void inicializa(){
     printf("\t\t\tMOTOR DE JOGO\n");
@@ -71,7 +50,5 @@ void inicializa(){
 int main(int argc, char *argv[]) {
     inicializa();
     enviaLabirinto();
-    recebeArgumento();
-
     return 0;
 }

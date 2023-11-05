@@ -41,23 +41,9 @@ void recebeLabirinto() {
     close(fd);
 }
 
-void enviaArgumento(char *argumento) {
-    int fd;
-    char *pipeNomeado1 = "/tmp/meu_pipe"; // Nome do pipe para comunicação
-
-    mkfifo(pipeNomeado1, 0666); // Criação do pipe
-
-    read(fd, argumento, 50 - 1);
-
-    // Processamento da mensagem recebida
-    printf("%s\n", argumento);
-
-    close(fd);
-}
 
 int main(int argc, char *argv[]) {
     recebeLabirinto();
-    enviaArgumento(argv[1]);
 
     return 0;
 }
