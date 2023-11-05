@@ -7,11 +7,31 @@
 #include <fcntl.h>
 
 #define TAMANHO_MAX 3000
+char nome[50];
 
 char nome[TAMANHO_MAX]; // Alocando memória para o nome
 
-void recebeNome() {
-    // ... (sem alterações)
+void recebeCredenciais() {
+    int fd;
+    char *pipeNomeado = "/tmp/meu_pipe";
+
+    // Abrir o pipe para leitura
+    fd = open(pipeNomeado, O_RDONLY);
+    if (fd == -1) {
+        printf("Erro ao abrir o pipe para leitura!\n");
+        return 1;
+    }
+
+    // Ler dados do pipe
+    int bytesRead = read(fd, nome, 50);
+    if (bytesRead == -1) {
+        printf("Erro ao ler do pipe!\n");
+        close(fd);
+        return 1;
+    }
+
+    // Fechar o pipe
+    close(fd);
 }
 
 void enviaLabirinto() {
@@ -92,6 +112,7 @@ void inicializa(){
 
 int main(int argc, char *argv[]) {
     inicializa();
+    printf("%s", nome);
     enviaLabirinto();
 
     return 0;
