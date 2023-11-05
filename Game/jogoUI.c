@@ -7,8 +7,15 @@
 #include <fcntl.h>
 
 #define TAMANHO_MAX 3000
+char nomeUsuario[10];
 
-int main() {
+int main(int argc, char *argv[]) {
+    if(argc != 2){
+        printf("Por favor insira o nome de Usuario");
+    }
+
+    strcpy(nomeUsuario, argv[1]);
+
     int fd;
     char *pipeNomeado = "/tmp/meu_pipe";
 
@@ -39,8 +46,6 @@ int main() {
         }
     }
 
-    // Imprimir os dados recebidos com substituição das letras 'F' por espaços
-    printf("Conteúdo recebido, substituindo as letras 'F' por espaços:\n");
     printf("%s\n", mensagem_recebida);
 
     return 0;
