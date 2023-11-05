@@ -28,9 +28,42 @@ void receberCredenciais() {
     printf("Credenciais recebidas: Usuario: %s\n", username);
 }
 
+void recebeLabirinto(){
+    int fd;
+    char *pipeNomeado = "/tmp/meu_pipe";
+
+    // Abrir o pipe para leitura
+    fd = open(pipeNomeado, O_RDONLY);
+    if (fd == -1) {
+        printf("Erro ao abrir o pipe para leitura!\n");
+        return 1;
+    }
+
+    char mensagem_recebida[TAMANHO_MAX];
+
+    // Ler dados do pipe
+    int bytesRead = read(fd, mensagem_recebida, TAMANHO_MAX);
+    if (bytesRead == -1) {
+        printf("Erro ao ler do pipe!\n");
+        close(fd);
+        return 1;
+    }
+
+    // Fechar o pipe
+    close(fd);
+
+    // Substituir as letras 'F' por espaços
+    for (int i = 0; i < bytesRead; i++) {
+        if (mensagem_recebida[i] == 'F') {
+            mensagem_recebida[i] = ' ';
+        }
+    }
+
+    printf("%s\n", mensagem_recebida);
+}
+
 int main() {
-    leComandosUsuario(); // Função para simular a leitura de comandos do usuário
-    receberCredenciais(); // Função para simular o recebimento das credenciais do usuário
+    recebeLabirinto();
 
     return 0;
 }

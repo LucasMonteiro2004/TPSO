@@ -85,10 +85,7 @@ void leComandosAdministrador() {
 
 
 int main() {
-    //enviaLabirinto();
-    //recebeNome();
-    
-    leComandosAdministrador(); // Função para simular a leitura de comandos do administrador
+    enviaLabirinto();
 
     return 0;
 }
