@@ -21,8 +21,7 @@ void leComandosUsuario() {
     printf("Comando do usuario: %s\n", comando);
 }
 
-void receberCredenciais(username) {
-    // Simulação de recebimento de credenciais
+void enviaCredenciais(username) {
     int fd;
     char *pipeNomeado = "/tmp/meu_pipe";
 
