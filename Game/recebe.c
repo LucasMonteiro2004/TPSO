@@ -5,8 +5,10 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <ncurses.h>
 
 #define TAMANHO_MAX 3000
+#define TAM_NOME 10
 
 char *username;
 
@@ -43,7 +45,7 @@ void recebeLabirinto() {
     close(fd);
 }
 
-void recebeNome(char *nome){
+void recebeNome(char nome[TAM_NOME]){
     int fd;
     char *pipe = "pipeNome";
 
@@ -51,7 +53,7 @@ void recebeNome(char *nome){
 
     fd = open(pipe, O_WRONLY);
     if (fd == -1) {
-        printf("Erro ao abrir o pipe para escrita!\n");
+        printf("Erro ao abrir o pipe para escrita do nome!\n");
         return;
     }
 
@@ -59,6 +61,42 @@ void recebeNome(char *nome){
     close(fd);
 }
 
+int enviaJogadas(){
+    int fd;
+    char *pipe = "PipeJogadas";
+
+    mkfifo(pipe, 0666);
+
+    int jogada = 0;
+
+    fd = open(pipe, O_WRONLY);
+    if(fd == -1){
+        printf("Erro ao abrir pipe para escrita de comandos!\n");
+        return;
+    }
+
+    int ch = getch();
+    if (ch == 'q' || ch == 'Q') {
+        exit(0);
+    }
+
+    if (ch == KEY_RIGHT) {
+        jogada = 1;
+    } else if (ch == KEY_LEFT) {
+        jogada = 2;
+    } else if (ch == KEY_UP) {
+        jogada = 3;
+    } else if (ch == KEY_DOWN) {
+        jogada = 4;
+    }
+
+    write(fd, jogada, sizeof(int));
+    close(fd);
+}
+
+void enviaComandos(){
+
+}
 
 int main(int argc, char *argv[]) {
     if(argc != 2){
@@ -67,9 +105,7 @@ int main(int argc, char *argv[]) {
 
     recebeLabirinto();
 
-    strcpy(username, argv[1]);
-
-    recebeNome(username);
+    recebeNome(argv[1]);
 
     return 0;
 }

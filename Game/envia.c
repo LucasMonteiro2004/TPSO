@@ -7,9 +7,9 @@
 #include <fcntl.h>
 
 #define TAMANHO_MAX 3000
-#define TAM_NOME 50
+#define TAM_NOME 10
 
-char *nome;
+char nome[TAM_NOME];
 
 void enviaLabirinto() {
     int fd;
@@ -53,7 +53,7 @@ void NomeUtilizador(){
         return;
     }
 
-    int bytesRead = read(fd, nome, TAM_NOME - 1);
+    int bytesRead = read(fd, nome, TAM_NOME);
     if (bytesRead == -1) {
         printf("Erro ao ler do pipe!\n");
         close(fd);
