@@ -7,6 +7,9 @@
 #include <fcntl.h>
 
 #define TAMANHO_MAX 3000
+#define TAM_NOME 50
+
+char *nome;
 
 void enviaLabirinto() {
     int fd;
@@ -40,6 +43,28 @@ void enviaLabirinto() {
     fclose(file);
 }
 
+void NomeUtilizador(){
+    int fd;
+    char *pipe = "pipeNome";
+
+    fd = open(pipe, O_RDONLY);
+    if (fd == -1) {
+        printf("Erro ao abrir o pipe para leitura!\n");
+        return;
+    }
+
+    int bytesRead = read(fd, nome, TAM_NOME - 1);
+    if (bytesRead == -1) {
+        printf("Erro ao ler do pipe!\n");
+        close(fd);
+        return;
+    }
+
+    printf("%s\n", nome);
+
+    close(fd);
+}
+
 
 void inicializa(){
     printf("\t\t\tMOTOR DE JOGO\n");
@@ -50,5 +75,6 @@ void inicializa(){
 int main(int argc, char *argv[]) {
     inicializa();
     enviaLabirinto();
+    NomeUtilizador();
     return 0;
 }

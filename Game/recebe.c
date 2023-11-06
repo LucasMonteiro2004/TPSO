@@ -8,6 +8,8 @@
 
 #define TAMANHO_MAX 3000
 
+char *username;
+
 void recebeLabirinto() {
     int fd;
     char *pipeNomeado = "/tmp/meu_pipe";
@@ -41,9 +43,33 @@ void recebeLabirinto() {
     close(fd);
 }
 
+void recebeNome(char *nome){
+    int fd;
+    char *pipe = "pipeNome";
+
+    mkfifo(pipe, 0666);
+
+    fd = open(pipe, O_WRONLY);
+    if (fd == -1) {
+        printf("Erro ao abrir o pipe para escrita!\n");
+        return;
+    }
+
+    write(fd, nome, strlen(nome));
+    close(fd);
+}
+
 
 int main(int argc, char *argv[]) {
+    if(argc != 2){
+        printf("Por favor insira seu nome");
+    }
+
     recebeLabirinto();
+
+    strcpy(username, argv[1]);
+
+    recebeNome(username);
 
     return 0;
 }
