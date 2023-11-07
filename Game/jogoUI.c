@@ -96,7 +96,7 @@ int enviaJogadas(){
 
 void enviaComandos(){
     int fd;
-    char *pipe = "PipeJogadas";
+    char *pipe = "PipeComandos";
 
     mkfifo(pipe, 0666);
 
