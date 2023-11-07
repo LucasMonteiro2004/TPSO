@@ -45,7 +45,7 @@ void recebeLabirinto() {
     close(fd);
 }
 
-void recebeNome(char nome[TAM_NOME]){
+void enviaNome(char nome[TAM_NOME]){
     int fd;
     char *pipe = "pipeNome";
 
@@ -120,7 +120,7 @@ int main(int argc, char *argv[]) {
 
     recebeLabirinto();
 
-    recebeNome(argv[1]);
+    enviaNome(argv[1]);
 
     return 0;
 }
