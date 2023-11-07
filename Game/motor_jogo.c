@@ -128,3 +128,12 @@ int main(int argc, char *argv[]) {
     NomeUtilizador();
     return 0;
 }
+
+/*
+fazer com que o pai seja quem executa o motor de jogo e os filhos os demais -> emilio
+estrutura user com nome e pid -> emilio
+ter um array dinamico que guarda a estrutura user -> emilio
+estrutura para comandos -> emilio
+estrutura de mensagens -> emilio
+logica de movimentação de usuario -> lucas
+*/
