@@ -9,7 +9,44 @@
 #define TAMANHO_MAX 3000
 #define TAM_NOME 10
 
-char nome[TAM_NOME];
+char nome[TAM_NOME], linha[80];
+int GRID_WIDTH = 0, GRID_HEIGHT = 0;
+char *arquivo = "labirinto1.txt";
+
+void calculaDimensoesLabirinto() {
+    FILE *file = fopen(arquivo, "r");
+    if (file == NULL) {
+        printf("Erro ao abrir o arquivo!\n");
+        return;
+    }
+
+    char linha[1000]; // Tamanho máximo de uma linha (ajuste conforme necessário)
+    int linhas = 0;
+
+    while (fgets(linha, sizeof(linha), file)) {
+        int comprimentoLinha = strlen(linha);
+        if (comprimentoLinha > GRID_WIDTH) {
+            GRID_WIDTH = comprimentoLinha; // Atualiza a largura se a linha atual for mais longa
+        }
+        linhas++; // Conta o número de linhas
+
+        int colunasNaLinha = 0;
+        char *token = strtok(linha, " "); 
+
+        while (token != NULL) {
+            colunasNaLinha++;
+            token = strtok(NULL, " ");
+        }
+
+        if (colunasNaLinha > GRID_HEIGHT) {
+            GRID_HEIGHT= colunasNaLinha; // Atualiza o número máximo de colunas
+        }
+    }
+
+    GRID_HEIGHT = linhas; // Define a altura como o número de linhas lidas
+
+    fclose(file);
+}
 
 void enviaLabirinto() {
     int fd;
@@ -19,7 +56,7 @@ void enviaLabirinto() {
 
     char mensagem_enviada[TAMANHO_MAX];
 
-    FILE *file = fopen("labirinto1.txt", "r");
+    FILE *file = fopen(arquivo, "r");
     if (file == NULL) {
         printf("Erro ao abrir o arquivo!\n");
         return;
@@ -65,6 +102,19 @@ void NomeUtilizador(){
     close(fd);
 }
 
+int is_obstacle(int x, int y, const char *grid) {
+    if (x < 0 || x >= GRID_WIDTH || y < 0 || y >= GRID_HEIGHT) {
+        return 1; // Fora dos limites da grade é considerado um obstáculo
+    }
+    return grid[y * GRID_WIDTH + x] == 'X';
+}
+
+int is_Fim(int x, int y, const char *grid) {
+    if (x < 0 || x >= GRID_WIDTH || y < 0 || y >= GRID_HEIGHT) {
+        return 0; // Fora dos limites da grade não é o fim
+    }
+    return grid[y * GRID_WIDTH + x] == 'F';
+}
 
 void inicializa(){
     printf("\t\t\tMOTOR DE JOGO\n");
