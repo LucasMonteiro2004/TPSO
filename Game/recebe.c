@@ -95,7 +95,22 @@ int enviaJogadas(){
 }
 
 void enviaComandos(){
+    int fd;
+    char *pipe = "PipeJogadas";
 
+    mkfifo(pipe, 0666);
+
+    int jogada = 0;
+
+    fd = open(pipe, O_WRONLY);
+    if(fd == -1){
+        printf("Erro ao abrir pipe para escrita de comandos!\n");
+        return;
+    }
+
+    //logica de comandos
+
+    close(fd);
 }
 
 int main(int argc, char *argv[]) {
