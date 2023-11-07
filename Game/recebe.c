@@ -71,7 +71,7 @@ int enviaJogadas(){
 
     fd = open(pipe, O_WRONLY);
     if(fd == -1){
-        printf("Erro ao abrir pipe para escrita de comandos!\n");
+        printf("Erro ao abrir pipe para escrita de jogadas!\n");
         return;
     }
 
