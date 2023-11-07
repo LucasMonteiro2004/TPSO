@@ -122,6 +122,36 @@ void inicializa(){
     printf("============================================================\n");
 }
 
+int recebeJogada(int playerX, int playerY){
+    int fd;
+    char *pipe = "PipeJogadas";
+
+    int jogada = 0;
+
+    fd = open(pipe, O_RDONLY);
+    if(fd == -1){
+        printf("Erro ao abrir pipe para leitura de jogadas!\n");
+        return;
+    }
+
+    read(fd, jogada, sizeof(int));
+
+    int new_x = playerX;
+    int new_y = playerY;
+
+        if (jogada == 1) {
+            new_x++;
+        } else if (jogada == 2) {
+            new_x--;
+        } else if (jogada == 3) {
+            new_y--;
+        } else if (jogada == 4) {
+            new_y++;
+        }
+
+    close(fd);
+}
+
 int main(int argc, char *argv[]) {
     inicializa();
     enviaLabirinto();
