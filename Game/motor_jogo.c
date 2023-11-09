@@ -125,7 +125,7 @@ void inicializa(){
 // inicializa o arrayJogadas
 player* incializiaJogadas(int numPlayers){
 player *players;
-players= (player *) malloc(NumPlayers);
+players= (player *) malloc(numPlayers);
 return players;
 }
 // Atualiza o tamanho Array de jogadas caso um Jogador saia do jogo
