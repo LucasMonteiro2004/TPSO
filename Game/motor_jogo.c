@@ -121,6 +121,38 @@ void inicializa(){
     printf("============================================================\n");
     printf("============================================================\n");
 }
+// inicializa o arrayJogadas
+player* incializiaJogadas(int numPlayers){
+player *players;
+players= (player *) malloc(NumPlayers);
+return players;
+}
+// Atualiza o tamanho Array de jogadas caso um Jogador saia do jogo
+player* atualizaJogadas(int numPlayers,char pidOut, player *players)
+{  
+   player* newPlayers
+   newPlayers= (player *) malloc(NumPlayers)
+   
+   if(pidOut=players[numPlayers-1].pid)
+   {
+    players[numplayers]=null;
+    for(int i=0,i<numPlayers-1,i++)
+    newPlayers[i]=players[i];
+   } 
+   
+   for(int i=0,i<numPlayer-1,i++)
+   {  newPlayers[i]=players[i];
+    if(pidOut==players[i].pid)        
+   {  
+      for(int j=i,j<numPlayer-1,j++)
+          newPlayers[i]=players[i+1];
+        
+        }
+        
+   }
+   
+return  newPlayers;
+}
 
 int recebeJogada(int playerX, int playerY){
     int fd;
