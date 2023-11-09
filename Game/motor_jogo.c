@@ -131,21 +131,21 @@ return players;
 // Atualiza o tamanho Array de jogadas caso um Jogador saia do jogo
 player* atualizaJogadas(int numPlayers,char pidOut, player *players)
 {  
-   player* newPlayers
-   newPlayers= (player *) malloc(NumPlayers)
+   player* newPlayers;
+   newPlayers = (player *) malloc(numPlayers);
    
    if(pidOut=players[numPlayers-1].pid)
    {
-    players[numplayers]=null;
-    for(int i=0,i<numPlayers-1,i++)
+    players[numPlayers]=NULL;
+    for(int i=0;i<numPlayers-1;i++)
     newPlayers[i]=players[i];
    } 
    
-   for(int i=0,i<numPlayer-1,i++)
+   for(int i=0;i<numPlayers-1;i++)
    {  newPlayers[i]=players[i];
     if(pidOut==players[i].pid)        
    {  
-      for(int j=i,j<numPlayer-1,j++)
+      for(int j=i;j<numPlayers-1;j++)
           newPlayers[i]=players[i+1];
         
         }
