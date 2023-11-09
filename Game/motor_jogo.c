@@ -5,6 +5,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include "motor_jogo.h"
 
 #define TAMANHO_MAX 3000
 #define TAM_NOME 10
