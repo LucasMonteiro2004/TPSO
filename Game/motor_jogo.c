@@ -122,6 +122,8 @@ void inicializa(){
     printf("============================================================\n");
     printf("============================================================\n");
 }
+
+/*
 // inicializa o arrayJogadas
 player* incializiaJogadas(int numPlayers){
 player *players;
@@ -136,7 +138,7 @@ player* atualizaJogadas(int numPlayers,char pidOut, player *players)
    
    if(pidOut=players[numPlayers-1].pid)
    {
-    players[numPlayers]=NULL;
+    players[numPlayers] = NULL;
     for(int i=0;i<numPlayers-1;i++)
     newPlayers[i]=players[i];
    } 
@@ -154,8 +156,8 @@ player* atualizaJogadas(int numPlayers,char pidOut, player *players)
    
 return  newPlayers;
 }
-
-int recebeJogada(int playerX, int playerY){
+*/
+void recebeJogada(int playerX, int playerY){
     int fd;
     char *pipe = "PipeJogadas";
 
@@ -167,7 +169,7 @@ int recebeJogada(int playerX, int playerY){
         return;
     }
 
-    read(fd, jogada, sizeof(int));
+    read(fd, &jogada, sizeof(int));
 
     int new_x = playerX;
     int new_y = playerY;

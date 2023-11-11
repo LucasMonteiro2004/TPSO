@@ -61,7 +61,7 @@ void enviaNome(char nome[TAM_NOME]){
     close(fd);
 }
 
-int enviaJogadas(){
+void enviaJogadas(){
     int fd;
     char *pipe = "PipeJogadas";
 
@@ -90,7 +90,7 @@ int enviaJogadas(){
         jogada = 4;
     }
 
-    write(fd, jogada, sizeof(int));
+    write(fd, &jogada, sizeof(int));
     close(fd);
 }
 

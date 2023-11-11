@@ -4,7 +4,7 @@
 #define MAX_BOT_MESSAGES 100
 #define MAX_COMMAND_LENGTH 50
 
-#include "jogoUI.h"
+//#include "jogoUI.h"
 
 //#define GRID_WIDTH 80  alterei porque estas já estão defenidas no motor_jogo.c
 //#define GRID_HEIGHT 30
@@ -35,7 +35,8 @@ char msgOwner[50];
 struct commandLine{
 char line[50];
 char cmdOwner[50];
-}
+};
+
 typedef struct player{
 char name[50];
 char pid[50];
