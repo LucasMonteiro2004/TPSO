@@ -157,7 +157,7 @@ player* atualizaJogadas(int numPlayers,char pidOut, player *players)
 return  newPlayers;
 }
 */
-void recebeJogada(int playerX, int playerY){
+int recebeJogada() {
     int fd;
     char *pipe = "PipeJogadas";
 
@@ -166,25 +166,48 @@ void recebeJogada(int playerX, int playerY){
     fd = open(pipe, O_RDONLY);
     if(fd == -1){
         printf("Erro ao abrir pipe para leitura de jogadas!\n");
-        return;
+        return 0;
     }
 
     read(fd, &jogada, sizeof(int));
-
-    int new_x = playerX;
-    int new_y = playerY;
-
-        if (jogada == 1) {
-            new_x++;
-        } else if (jogada == 2) {
-            new_x--;
-        } else if (jogada == 3) {
-            new_y--;
-        } else if (jogada == 4) {
-            new_y++;
-        }
-
     close(fd);
+
+    return jogada;
+}
+
+
+int processaJogada(int *playerX, int *playerY, int jogada, const char *labirinto) {
+    int new_x = *playerX;
+    int new_y = *playerY;
+
+    if (jogada == 1 && labirinto[new_y * GRID_WIDTH + new_x + 1] != 'X') {
+        new_x++;
+    } else if (jogada == 2 && labirinto[new_y * GRID_WIDTH + new_x - 1] != 'X') {
+        new_x--;
+    } else if (jogada == 3 && labirinto[(new_y - 1) * GRID_WIDTH + new_x] != 'X') {
+        new_y--;
+    } else if (jogada == 4 && labirinto[(new_y + 1) * GRID_WIDTH + new_x] != 'X') {
+        new_y++;
+    }
+
+    // Verifica se o jogador atingiu o objetivo
+    if (isFinish(new_x, new_y, labirinto)) {
+        printf("Parabéns! Jogador atingiu o objetivo!\n");
+        return 0; // Sinaliza que o jogo deve encerrar
+    }
+
+    *playerX = new_x;
+    *playerY = new_y;
+
+    return 1; // Sinaliza que o jogo deve continuar
+}
+
+void jogoLoop(int playerX, int playerY, const char *labirinto) {
+    int jogada;
+
+    do {
+        jogada = recebeJogada();
+    } while (processaJogada(&playerX, &playerY, jogada, labirinto));
 }
 
 int main(int argc, char *argv[]) {
