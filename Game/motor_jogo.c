@@ -192,7 +192,7 @@ int processaJogada(int *playerX, int *playerY, int jogada, const char *labirinto
 
     // Verifica se o jogador atingiu o objetivo
     if (isFinish(new_x, new_y, labirinto)) {
-        printf("Parabéns! Jogador atingiu o objetivo!\n");
+        printf("Parabens! Jogador atingiu o objetivo!\n");
         return 0; // Sinaliza que o jogo deve encerrar
     }
 
