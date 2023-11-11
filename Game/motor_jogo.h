@@ -10,7 +10,7 @@
 //#define GRID_HEIGHT 30
 #define NUM_PLAYERS 3
 
-#define PIPE_NAME "jogo_pipe"
+//#define PIPE_NAME "jogo_pipe"
 
 struct BotMessage {
     char content[MAX_COMMAND_LENGTH];
