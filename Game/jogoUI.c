@@ -7,10 +7,13 @@
 #include <fcntl.h>
 #include <ncurses.h>
 
+#include "motor_jogo.h"
+
 #define TAMANHO_MAX 3000
 #define TAM_NOME 10
 
 char *username;
+player p;
 
 void recebeLabirinto() {
     int fd;
@@ -45,7 +48,7 @@ void recebeLabirinto() {
     close(fd);
 }
 
-void enviaNome(char nome[TAM_NOME]){
+void enviaCredenciais(char *nome){
     int fd;
     char *pipe = "pipeNome";
 
@@ -57,8 +60,12 @@ void enviaNome(char nome[TAM_NOME]){
         return;
     }
 
-    write(fd, nome, strlen(nome));
+    p.pid = getpid();
+    p.name = nome;
+
+    write(fd, &p, sizeof(player));
     close(fd);
+    free(p.name);
 }
 
 void enviaJogadas(){
@@ -220,7 +227,7 @@ int main(int argc, char *argv[]) {
 
     recebeLabirinto();
 
-    enviaNome(argv[1]);
+    enviaCredenciais(argv[1]);
 
     return 0;
 }

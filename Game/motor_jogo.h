@@ -37,8 +37,8 @@ char cmdOwner[50];
 };
 
 typedef struct player{
-char name[50];
-char pid[50];
+char *name;
+int pid;
 int plays[100];
 }player;
 

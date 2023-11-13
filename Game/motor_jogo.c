@@ -10,6 +10,8 @@
 #define TAMANHO_MAX 3000
 #define TAM_NOME 10
 
+player p;
+
 char nome[TAM_NOME], linha[80];
 int GRID_WIDTH = 0, GRID_HEIGHT = 0;
 char *arquivo = "labirinto1.txt";
@@ -81,9 +83,14 @@ void enviaLabirinto() {
     fclose(file);
 }
 
-void NomeUtilizador(){
+void NomeUtilizador() {
     int fd;
     char *pipe = "pipeNome";
+
+    if (access(pipe, F_OK) != 0) {
+        printf("[ERRO] FIFO '%s' nao existe", pipe);
+        return;
+    }
 
     fd = open(pipe, O_RDONLY);
     if (fd == -1) {
@@ -91,14 +98,14 @@ void NomeUtilizador(){
         return;
     }
 
-    int bytesRead = read(fd, nome, TAM_NOME);
+    int bytesRead = read(fd, &p, sizeof(player));
     if (bytesRead == -1) {
         printf("Erro ao ler do pipe!\n");
         close(fd);
         return;
     }
 
-    printf("%s\n", nome);
+    printf("Nome: %s\nPID: %d\n", p.name, p.pid);
 
     close(fd);
 }
