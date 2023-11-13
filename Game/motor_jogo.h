@@ -29,9 +29,8 @@ struct CommandAdmin {
 struct mensages{
 char msg[50];
 char msgOwner[50];
-
-
 };
+
 struct commandLine{
 char line[50];
 char cmdOwner[50];
