@@ -63,9 +63,9 @@ void enviaCredenciais(char *nome){
     p.pid = getpid();
     p.name = nome;
 
-    write(fd, &p, sizeof(player));
+    write(fd, &p, sizeof(p));
     close(fd);
-    free(p.name);
+    unlink(pipe);
 }
 
 void enviaJogadas(){
