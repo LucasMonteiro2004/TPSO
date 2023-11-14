@@ -303,9 +303,6 @@ int main(int argc, char *argv[]) {
     }
 
     initscr(); // Inicializa a biblioteca ncurses
-    cbreak();  // Desativa o buffer de linha (leitura de caracteres sem esperar Enter)
-    keypad(stdscr, TRUE); // Habilita as teclas especiais, como a tecla de espaço
-    noecho(); // Não exibe os caracteres digitados
 
     recebeLabirinto();
     enviaCredenciais(argv[1]);
