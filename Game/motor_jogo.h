@@ -17,9 +17,10 @@ struct BotMessage {
     char content[MAX_COMMAND_LENGTH];
 };
 
-struct Coordinates {
+struct Bot {
     int x;
     int y;
+    int duration;
 };
 
 struct CommandAdmin {

@@ -221,75 +221,68 @@ void jogoLoop(int playerX, int playerY, const char *labirinto) {
     } while (processaJogada(&playerX, &playerY, jogada, labirinto));
 }
 
-void executaBot(const char *program_path, char *const arguments[]){
+
+void executaBot(const char *program_path, char *const arguments[]) {
+    pid_t pid;
+    struct Bot bot;
     int pipe_fd[2];
 
+    // Cria um pipe para comunicação entre processos
     if (pipe(pipe_fd) == -1) {
-        perror("pipe");
-        return;
+        perror("Erro ao criar pipe");
+        exit(EXIT_FAILURE);
     }
 
-    pid_t pid = fork();
-
-    if (pid == -1) {
-        perror("fork");
-        return;
+    // Cria um novo processo
+    if ((pid = fork()) == -1) {
+        perror("Erro ao criar processo");
+        exit(EXIT_FAILURE);
     }
 
     if (pid == 0) {
-        // Este é o processo filho
         // Fecha a extremidade de leitura do pipe
         close(pipe_fd[0]);
 
-        // Redireciona a saída padrão para o pipe
+        // Redireciona a saída padrão para a extremidade de escrita do pipe
         dup2(pipe_fd[1], STDOUT_FILENO);
 
-        // Fecha a extremidade de escrita do pipe, pois não a usaremos
-        close(pipe_fd[1]);
-
-        // Este é o ponto onde o programa é executado
-        execvp(program_path, arguments);
-
-        // Se execvp falhar, imprime uma mensagem de erro
-        perror("execvp");
-        // Termina o processo filho
-        _exit(EXIT_FAILURE);
-    } else {
-        // Este é o processo pai
         // Fecha a extremidade de escrita do pipe
         close(pipe_fd[1]);
 
-        // Leitura e impressão da saída do programa
-        char buffer[1024];
-        ssize_t bytes_read;
-        while ((bytes_read = read(pipe_fd[0], buffer, sizeof(buffer))) > 0) {
-            // Adiciona a mensagem "Recebi do bot: " antes de cada linha da saída
-            printf("Recebi do bot: %.*s", (int)bytes_read, buffer);
+        execvp(program_path, arguments);
+
+        perror("Erro ao executar o programa bot");
+        exit(EXIT_FAILURE);
+    } else {
+        // Fecha a extremidade de escrita do pipe
+        close(pipe_fd[1]);
+
+        FILE *pipe_stream = fdopen(pipe_fd[0], "r");
+        if (pipe_stream == NULL) {
+            perror("Erro ao abrir o fluxo do pipe");
+            exit(EXIT_FAILURE);
         }
+
+        fscanf(pipe_stream, "%d %d %d", &bot.x, &bot.y, &bot.duration);
+
+        fclose(pipe_stream);
 
         // Aguarda o término do processo filho
-        int status;
-        waitpid(pid, &status, 0);
+        wait(NULL);
 
-        // Fecha a extremidade de leitura do pipe
-        close(pipe_fd[0]);
-
-        if (WIFEXITED(status)) {
-            printf("O programa foi executado com código de saída: %d\n", WEXITSTATUS(status));
-        } else {
-            printf("O programa terminou de forma anormal.\n");
-        }
+        printf("RECEBI: %d %d %d\n", bot.x, bot.y, bot.duration);
     }
 }
 
+
 int main(int argc, char *argv[]) {
-    const char *program_path = "./bot";  // Substitua pelo caminho real do seu programa
-    char *const arguments[] = {program_path, 4, 5, NULL};
+    char *arguments[] = {"./bot", "2", "3", NULL};
+    
 
     inicializa();
     enviaLabirinto();
     NomeUtilizador();
-    executaBot(program_path, arguments);
+    executaBot("./bot", arguments);
     return 0;
 }
 
