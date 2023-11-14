@@ -92,6 +92,7 @@ void enviaJogadas(){
     }
 
     initscr();
+    keypad(stdscr, TRUE); // Habilita as teclas especiais, como a tecla de espaço
 
     int ch = getch();
     if (ch == 'q' || ch == 'Q') {
@@ -308,6 +309,7 @@ int main(int argc, char *argv[]) {
     }
 
     initscr(); // Inicializa a biblioteca ncurses
+    keypad(stdscr, TRUE); // Habilita as teclas especiais, como a tecla de espaço
 
     recebeLabirinto();
     enviaCredenciais(argv[1]);

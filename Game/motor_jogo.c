@@ -272,7 +272,7 @@ void executaBot(const char *program_path, char *const arguments[]) {
         // Aguarda o término do processo filho
         wait(NULL);
 
-        printf("RECEBI: %d %d %d\n", bot.x, bot.y, bot.duration);
+        printf("RECEBI do bot: %d %d %d\n", bot.x, bot.y, bot.duration);
     }
 }
 
