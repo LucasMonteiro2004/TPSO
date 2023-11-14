@@ -7,8 +7,6 @@
 #include <fcntl.h>
 #include "motor_jogo.h"
 
-#define TAMANHO_MAX 3000
-
 player p;
 
 char linha[80];
