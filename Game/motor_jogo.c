@@ -183,6 +183,8 @@ int recebeJogada() {
     read(fd, &jogada, sizeof(int));
     close(fd);
 
+    printf("jogada %d\n", jogada);
+
     return jogada;
 }
 
@@ -282,6 +284,7 @@ int main(int argc, char *argv[]) {
     enviaLabirinto();
     NomeUtilizador();
     executaBot("./bot", arguments);
+    recebeJogada();
     return 0;
 }
 

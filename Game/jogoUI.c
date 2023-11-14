@@ -40,8 +40,20 @@ void recebeLabirinto() {
         }
     }
 
-    // Processamento da mensagem recebida
-    printf("%s\n", mensagem_recebida);
+    // Inicializa o modo ncurses
+    initscr();
+
+    // Processamento da mensagem recebida usando ncurses
+    printw("%s\n", mensagem_recebida);
+
+    // Atualiza a tela
+    refresh();
+
+    // Aguarde a entrada do usuário antes de encerrar
+    getch();
+
+    // Finaliza o modo ncurses
+    endwin();
 
     close(fd);
 }
@@ -278,8 +290,16 @@ int main(int argc, char *argv[]) {
         printf("Por favor insira seu nome");
     }
 
+    initscr(); // Inicializa a biblioteca ncurses
+    cbreak();  // Desativa o buffer de linha (leitura de caracteres sem esperar Enter)
+    keypad(stdscr, TRUE); // Habilita as teclas especiais, como a tecla de espaço
+    noecho(); // Não exibe os caracteres digitados
+
     recebeLabirinto();
     enviaCredenciais(argv[1]);
+    enviaJogadas();
+
+    endwin();
 
     return 0;
 }
