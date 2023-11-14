@@ -91,6 +91,8 @@ void enviaJogadas(){
         return;
     }
 
+    initscr();
+
     int ch = getch();
     if (ch == 'q' || ch == 'Q') {
         exit(0);
@@ -107,6 +109,16 @@ void enviaJogadas(){
     }
 
     write(fd, &jogada, sizeof(int));
+
+    // Atualiza a tela
+    refresh();
+
+    // Aguarde a entrada do usuário antes de encerrar
+    getch();
+
+    // Finaliza o modo ncurses
+    endwin();
+
     close(fd);
 }
 
