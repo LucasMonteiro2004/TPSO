@@ -165,6 +165,24 @@ player* atualizaJogadas(int numPlayers,char pidOut, player *players)
 return  newPlayers;
 }
 */
+
+player* criarArray(int tamanho) {
+    player* array = (player*)malloc(tamanho * sizeof(player));
+
+    if (array == NULL) {
+        printf("Erro ao alocar memória para o array.\n");
+        return NULL;
+    }
+
+    for (int i = 0; i < tamanho; i++) {
+        array[i].pid = -1;
+        strcpy(array[i].name, "");
+    }
+
+    // Retorna o ponteiro para o array alocado
+    return array;
+}
+
 int recebeJogada() {
     int fd;
     char *pipe = "PipeJogadas";
