@@ -297,6 +297,11 @@ int validaComandos(char *command){
 
 }
 
+void exibeLabirintoJogadas() {
+    recebeLabirinto();
+    enviaJogadas();
+}
+
 int main(int argc, char *argv[]) {
     if(argc != 2){
         printf("Por favor insira seu nome");

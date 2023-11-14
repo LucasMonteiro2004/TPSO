@@ -276,7 +276,6 @@ void executaBot(const char *program_path, char *const arguments[]) {
     }
 }
 
-
 int main(int argc, char *argv[]) {
     char *arguments[] = {"./bot", "2", "3", NULL};
     
