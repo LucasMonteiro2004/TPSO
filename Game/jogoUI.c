@@ -98,6 +98,10 @@ void enviaJogadas(){
     close(fd);
 }
 
+void criaTerminal(){
+    
+}
+
 void enviaComandos(){
     int fd;
     char *pipe = "PipeComandos";
