@@ -98,8 +98,58 @@ void enviaJogadas(){
     close(fd);
 }
 
-void criaTerminal(){
+void create_space_comands() {
+    initscr(); // Inicializa a biblioteca ncurses
+    cbreak();  // Desativa o buffer de linha (leitura de caracteres sem esperar Enter)
+    keypad(stdscr, TRUE); // Habilita as teclas especiais, como a tecla de espaço
+    noecho(); // Não exibe os caracteres digitados
 
+    // Obtém o tamanho da tela
+    int rows, cols;
+    getmaxyx(stdscr, rows, cols);
+
+    // Calcula as dimensões da janela
+    int window_rows = rows / 2;
+    int window_cols = cols / 2;
+    int start_row = (rows - window_rows) / 2;
+    int start_col = (cols - window_cols) / 2;
+
+    // Cria a janela
+    WINDOW *win = newwin(window_rows, window_cols, start_row, start_col);
+
+    // Habilita o reconhecimento de teclas de função e setas
+    keypad(win, TRUE);
+
+    // Configura o cursor invisível
+    curs_set(0);
+
+    // Preenche a janela com algum conteúdo
+    box(win, 0, 0);
+    mvwprintw(win, 1, 1, "Pressione ESPAÇO para acessar a área, ENTER para sair.");
+
+    // Atualiza a tela
+    refresh();
+
+    // Loop principal
+    int ch;
+    while ((ch = getch()) != '\n') {
+        if (ch == ' ') {
+            // Se pressionar espaço, faz alguma ação dentro da área
+            // Por exemplo, exibe uma mensagem na janela interna
+            werase(win); // Limpa a janela
+            box(win, 0, 0);
+            mvwprintw(win, 1, 1, "Você está dentro da área! Pressione ENTER para sair.");
+            wrefresh(win); // Atualiza a janela interna
+        }
+    }
+
+    // Limpa e desaloca a janela
+    werase(win);
+    wrefresh(win);
+    delwin(win);
+
+    // Finaliza a biblioteca ncurses
+    endwin();
 }
 
 void enviaComandos(char *comando){
@@ -229,7 +279,6 @@ int main(int argc, char *argv[]) {
     }
 
     recebeLabirinto();
-
     enviaCredenciais(argv[1]);
 
     return 0;
