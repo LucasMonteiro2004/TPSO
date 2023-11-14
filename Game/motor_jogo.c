@@ -8,11 +8,10 @@
 #include "motor_jogo.h"
 
 #define TAMANHO_MAX 3000
-#define TAM_NOME 10
 
 player p;
 
-char nome[TAM_NOME], linha[80];
+char linha[80];
 int GRID_WIDTH = 0, GRID_HEIGHT = 0;
 char *arquivo = "labirinto1.txt";
 
@@ -98,6 +97,8 @@ void NomeUtilizador() {
         return;
     }
 
+    
+
     int bytesRead = read(fd, &p, sizeof(player));
     if (bytesRead == -1) {
         printf("Erro ao ler do pipe!\n");
@@ -105,7 +106,10 @@ void NomeUtilizador() {
         return;
     }
 
+    //p.name = strdup(nome);
+
     printf("Nome: %s\nPID: %d\n", p.name, p.pid);
+    //free(p.name);
 
     close(fd);
 }

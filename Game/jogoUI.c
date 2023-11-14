@@ -10,9 +10,7 @@
 #include "motor_jogo.h"
 
 #define TAMANHO_MAX 3000
-#define TAM_NOME 10
 
-char *username;
 player p;
 
 void recebeLabirinto() {
@@ -48,7 +46,7 @@ void recebeLabirinto() {
     close(fd);
 }
 
-void enviaCredenciais(char *nome){
+void enviaCredenciais(char nome[TAM_NOME]){
     int fd;
     char *pipe = "pipeNome";
 
@@ -61,11 +59,10 @@ void enviaCredenciais(char *nome){
     }
 
     p.pid = getpid();
-    p.name = nome;
+    strncpy(p.name, nome, TAM_NOME);
 
     write(fd, &p, sizeof(p));
     close(fd);
-    unlink(pipe);
 }
 
 void enviaJogadas(){

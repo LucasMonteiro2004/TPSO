@@ -9,6 +9,7 @@
 //#define GRID_WIDTH 80  alterei porque estas já estão defenidas no motor_jogo.c
 //#define GRID_HEIGHT 30
 #define NUM_PLAYERS 3
+#define TAM_NOME 20
 
 //#define PIPE_NAME "jogo_pipe"
 
@@ -37,9 +38,8 @@ char cmdOwner[50];
 };
 
 typedef struct player{
-char *name;
+char name[TAM_NOME];
 int pid;
-int plays[100];
 }player;
 
 
