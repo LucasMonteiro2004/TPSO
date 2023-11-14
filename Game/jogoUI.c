@@ -99,16 +99,14 @@ void enviaJogadas(){
 }
 
 void criaTerminal(){
-    
+
 }
 
-void enviaComandos(){
+void enviaComandos(char *comando){
     int fd;
     char *pipe = "PipeComandos";
 
     mkfifo(pipe, 0666);
-
-    int jogada = 0;
 
     fd = open(pipe, O_WRONLY);
     if(fd == -1){
@@ -116,7 +114,11 @@ void enviaComandos(){
         return;
     }
 
-    //logica de comandos
+    if(validaComandos(comando) == 1){
+        write(fd, comando, sizeof(comando));
+    }else{
+        printf("impossivel enviar comando!!!");
+    }
 
     close(fd);
 }
@@ -199,7 +201,7 @@ int validateEndCommand(const char *command) {
     }
 }
 
-void validaComandos(char *command){
+int validaComandos(char *command){
     // Validar comandos
     if (validateUsersCommand(command)) {
         // Lógica para o comando "users"
