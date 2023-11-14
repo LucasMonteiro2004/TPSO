@@ -13,9 +13,6 @@ player p;
 
 char linha[80];
 int GRID_WIDTH = 0, GRID_HEIGHT = 0;
-char *arquivo = "labirinto1.txt";
-char *arquivo1 = "labirinto2.txt";
-char *arquivo2 = "labirinto3.txt";
 
 void calculaDimensoesLabirinto() {
     FILE *file = fopen(arquivo, "r");

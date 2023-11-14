@@ -4,14 +4,12 @@
 #define MAX_BOT_MESSAGES 100
 #define MAX_COMMAND_LENGTH 50
 
-//#include "jogoUI.h"
-
-//#define GRID_WIDTH 80  alterei porque estas já estão defenidas no motor_jogo.c
-//#define GRID_HEIGHT 30
 #define NUM_PLAYERS 3
 #define TAM_NOME 20
 
-//#define PIPE_NAME "jogo_pipe"
+char *arquivo = "labirinto1.txt";
+char *arquivo1 = "labirinto2.txt";
+char *arquivo2 = "labirinto3.txt";
 
 struct BotMessage {
     char content[MAX_COMMAND_LENGTH];
