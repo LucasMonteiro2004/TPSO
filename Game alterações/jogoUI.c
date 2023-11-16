@@ -45,7 +45,7 @@ void recebeLabirinto() {
     printw("%s\n", mensagem_recebida);
 
     // Adiciona a segunda área
-    printw("Pressione ' ' para entrar e Enter para sair\n");
+    printw("Pressione ' ' para entrar no terminal de comandos e Enter para sair\n");
 
     int ch;
     while ((ch = getch()) != 10) { // 10 é o código ASCII para Enter
