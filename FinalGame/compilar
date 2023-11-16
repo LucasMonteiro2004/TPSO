@@ -1,2 +1,0 @@
-gcc -o motor_jogo motor_jogo.c
-gcc -o jogoUI jogoUI.c -lncurses
