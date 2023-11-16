@@ -1,16 +1,13 @@
-CC = gcc
-CFLAGS = -Wall
-
 all: motor_jogo jogoUI bot
 
 motor_jogo: motor_jogo.c motor_jogo.h
-    $(CC) $(CFLAGS) -o motor_jogo motor_jogo.c
+	gcc -o motor_jogo motor_jogo.c
 
 jogoUI: jogoUI.c
-    $(CC) $(CFLAGS) -o jogoUI jogoUI.c -lncurses
+	gcc -o jogoUI jogoUI.c -lncurses
 
 bot: bot.c
-    $(CC) $(CFLAGS) -o bot bot.c
+	gcc -o bot bot.c
 
 clean:
-    rm -f motor_jogo jogoUI bot
+	rm -f motor_jogo jogoUI bot
