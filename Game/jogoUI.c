@@ -75,7 +75,11 @@ void enviaCredenciais(char nome[TAM_NOME]){
     close(fd);
 }
 
-void enviaJogadas(){
+// Adicione uma variável para armazenar a posição do pivot
+struct Coordenadas pivot;
+
+// Modifique a função enviaJogadas para incluir a lógica do pivot
+void enviaJogadas() {
     int fd;
     char *pipe = "PipeJogadas";
 
@@ -90,7 +94,7 @@ void enviaJogadas(){
     }
 
     initscr();
-    keypad(stdscr, TRUE); // Habilita as teclas especiais, como a tecla de espaço
+    keypad(stdscr, TRUE);
 
     int ch = getch();
     if (ch == 'q' || ch == 'Q') {
@@ -99,27 +103,29 @@ void enviaJogadas(){
 
     if (ch == KEY_RIGHT) {
         jogada = 1;
+        pivot.x++;
     } else if (ch == KEY_LEFT) {
         jogada = 2;
+        pivot.x--;
     } else if (ch == KEY_UP) {
         jogada = 3;
+        pivot.y--;
     } else if (ch == KEY_DOWN) {
         jogada = 4;
+        pivot.y++;
     }
 
+    // Adicione o código para verificar limites do pivot (se necessário)
+
     write(fd, &jogada, sizeof(int));
+    write(fd, &pivot, sizeof(struct Coordenadas)); // Envie a posição do pivot
 
-    // Atualiza a tela
     refresh();
-
-    // Aguarde a entrada do usuário antes de encerrar
     getch();
-
-    // Finaliza o modo ncurses
     endwin();
-
     close(fd);
 }
+
 
 void create_space_comands() {
     initscr(); // Inicializa a biblioteca ncurses
@@ -304,12 +310,20 @@ void exibeLabirintoJogadas() {
 int main(int argc, char *argv[]) {
     if(argc != 2){
         printf("Por favor insira seu nome");
+        return 1;
     }
 
-    initscr(); // Inicializa a biblioteca ncurses
-    keypad(stdscr, TRUE); // Habilita as teclas especiais, como a tecla de espaço
+    initscr();
+    keypad(stdscr, TRUE);
 
+    // Recebe e exibe o labirinto
     recebeLabirinto();
+
+    // Inicializa a posição do pivot com a primeira letra do nome do jogador
+    pivot.x = argv[1][0] - 'A';  // Assumindo que o nome do jogador começa com uma letra maiúscula
+    pivot.y = 0;
+
+    // Envie credenciais e jogadas
     enviaCredenciais(argv[1]);
     enviaJogadas();
 

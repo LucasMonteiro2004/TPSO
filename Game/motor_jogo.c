@@ -204,22 +204,30 @@ int recebeJogada() {
 }
 
 
+// Adicione uma variável global para armazenar a posição do pivot
+struct Coordenadas pivot;
+
+// Atualize a função para processar jogadas, considerando a posição do pivot
 int processaJogada(int *playerX, int *playerY, int jogada, const char *labirinto) {
     int new_x = *playerX;
     int new_y = *playerY;
 
     if (jogada == 1 && labirinto[new_y * GRID_WIDTH + new_x + 1] != 'X') {
         new_x++;
+        pivot.x++; // Movimente o pivot junto com o jogador
     } else if (jogada == 2 && labirinto[new_y * GRID_WIDTH + new_x - 1] != 'X') {
         new_x--;
+        pivot.x--;
     } else if (jogada == 3 && labirinto[(new_y - 1) * GRID_WIDTH + new_x] != 'X') {
         new_y--;
+        pivot.y--;
     } else if (jogada == 4 && labirinto[(new_y + 1) * GRID_WIDTH + new_x] != 'X') {
         new_y++;
+        pivot.y++;
     }
 
-    // Verifica se o jogador atingiu o objetivo
-    if (is_Fim(new_x, new_y, labirinto)) {
+    // Verifique se o jogador atingiu o objetivo, considerando a posição do pivot
+    if (is_Fim(new_x, new_y, labirinto) && is_Fim(pivot.x, pivot.y, labirinto)) {
         printf("Parabens! Jogador atingiu o objetivo!\n");
         return 0; // Sinaliza que o jogo deve encerrar
     }
@@ -229,6 +237,7 @@ int processaJogada(int *playerX, int *playerY, int jogada, const char *labirinto
 
     return 1; // Sinaliza que o jogo deve continuar
 }
+
 
 void jogoLoop(int playerX, int playerY, const char *labirinto) {
     int jogada;
@@ -295,9 +304,22 @@ int main(int argc, char *argv[]) {
     char *arguments[] = {"./bot", "2", "3", NULL};
     
     inicializa();
+    
+    // Envia o labirinto
     enviaLabirinto();
+
+    // Recebe o nome do jogador
     NomeUtilizador();
+
+    // Inicializa a posição do pivot com a primeira letra do nome do jogador
+    pivot.x = argv[1][0] - 'A';  // Assumindo que o nome do jogador começa com uma letra maiúscula
+    pivot.y = 0;
+
+    // Executa o bot
     executaBot("./bot", arguments);
+
+    // Recebe jogada
     recebeJogada();
+
     return 0;
 }
