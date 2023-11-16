@@ -44,11 +44,15 @@ void recebeLabirinto() {
     // Processamento da mensagem recebida usando ncurses
     printw("%s\n", mensagem_recebida);
 
-    // Atualiza a tela
-    refresh();
+    // Adiciona a segunda área
+    printw("Pressione ' ' para entrar e Enter para sair\n");
 
-    // Aguarde a entrada do usuário antes de encerrar
-    getch();
+    int ch;
+    while ((ch = getch()) != 10) { // 10 é o código ASCII para Enter
+        if (ch == ' ') {
+            printw("Você entrou!\n");
+        }
+    }
 
     // Finaliza o modo ncurses
     endwin();
