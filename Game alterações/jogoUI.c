@@ -51,6 +51,7 @@ void recebeLabirinto() {
     while ((ch = getch()) != 10) { // 10 é o código ASCII para Enter
         if (ch == ' ') {
             printw("Você entrou!\n");
+            printw("Comando >> ");
         }
     }
 
