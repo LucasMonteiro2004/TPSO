@@ -7,7 +7,7 @@ motor_jogo: motor_jogo.c motor_jogo.h
     $(CC) $(CFLAGS) -o motor_jogo motor_jogo.c
 
 jogoUI: jogoUI.c
-    $(CC) $(CFLAGS) -o jogoUI jogoUI.c
+    $(CC) $(CFLAGS) -o jogoUI jogoUI.c -lncurses
 
 bot: bot.c
     $(CC) $(CFLAGS) -o bot bot.c
