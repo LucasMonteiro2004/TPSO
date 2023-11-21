@@ -184,32 +184,35 @@ void create_space_comands() {
     endwin();
 }
 
-void enviaComandos(char comando[TAM_NOME]){
+void enviaComandos(char comando[TAM_NOME]) {
     int fd;
     char *pipe = "PipeComandos";
 
     mkfifo(pipe, 0666);
 
     fd = open(pipe, O_WRONLY);
-    if(fd == -1){
+    if (fd == -1) {
         printf("Erro ao abrir pipe para escrita de comandos!\n");
         return;
     }
 
-    if(validaComandos(comando) == 1){
+    int resultadoValidacao = validaComandos(comando);
+
+    if (resultadoValidacao != 1) {
+        char desconhecido[3] = "NA\n";  // Adicione uma quebra de linha para melhor formatação
+        write(fd, desconhecido, 3);
+    } else if (resultadoValidacao == 1) {
         write(fd, comando, TAM_NOME);
-    }else if(validaComandos(comando) == 2){
-        char desconhecido[2] = "NA";
-        write(fd, desconhecido, 2);
-    }else{
-        printf("impossivel enviar comando!!!\n");
+    } else {
+        printf("impossível enviar comando!!!\n");
     }
 
     close(fd);
 }
 
+
 // Função para validar o comando "users"
-int validateUsersCommand(const char *command) {
+int validateUsersCommand(const char command[TAM_NOME]) {
     if (strcmp(command, "users") == 0) {
         printf("Comando users valido\n");
         return 1; // Comando valido
@@ -217,7 +220,7 @@ int validateUsersCommand(const char *command) {
 }
 
 // Função para validar o comando "kick"
-int validateKickCommand(const char *command) {
+int validateKickCommand(const char command[TAM_NOME]) {
     const char *prefix = "kick ";
     if (strncmp(command, prefix, strlen(prefix)) == 0) {
         printf("Comando kick valido para o jogador: %s\n", command + strlen(prefix));
@@ -226,7 +229,7 @@ int validateKickCommand(const char *command) {
 }
 
 // Função para validar o comando "bots"
-int validateBotsCommand(const char *command) {
+int validateBotsCommand(const char command[TAM_NOME]) {
     if (strcmp(command, "bots") == 0) {
         printf("Comando bots valido\n");
         return 1; // Comando valido
@@ -234,7 +237,7 @@ int validateBotsCommand(const char *command) {
 }
 
 // Função para validar o comando "bmov"
-int validateBmovCommand(const char *command) {
+int validateBmovCommand(const char command[TAM_NOME]) {
     if (strcmp(command, "bmov") == 0) {
         printf("Comando bmov valido\n");
         return 1; // Comando valido
@@ -242,7 +245,7 @@ int validateBmovCommand(const char *command) {
 }
 
 // Função para validar o comando "rbm"
-int validateRbmCommand(const char *command) {
+int validateRbmCommand(const char command[TAM_NOME]) {
     if (strcmp(command, "rbm") == 0) {
         printf("Comando rbm valido\n");
         return 1; // Comando valido
@@ -250,7 +253,7 @@ int validateRbmCommand(const char *command) {
 }
 
 // Função para validar o comando "begin"
-int validateBeginCommand(const char *command) {
+int validateBeginCommand(const char command[TAM_NOME]) {
     if (strcmp(command, "begin") == 0) {
         printf("Comando begin valido\n");
         return 1; // Comando valido
@@ -258,37 +261,38 @@ int validateBeginCommand(const char *command) {
 }
 
 // Função para validar o comando "end"
-int validateEndCommand(const char *command) {
+int validateEndCommand(const char command[TAM_NOME]) {
     if (strcmp(command, "end") == 0) {
         printf("Comando end valido\n");
         return 1; // Comando valido
     }
 }
 
-int validaComandos(char *command){
+int validaComandos(char command[TAM_NOME]){
     // Validar comandos
-    if (validateUsersCommand(command)) {
+    if (validateUsersCommand(command) == 1) {
         // Lógica para o comando "users"
         return 1;
-    } else if (validateKickCommand(command)) {
+    } else if (validateKickCommand(command) == 1) {
         // Lógica para o comando "kick"
         return 1;
-    } else if (validateBotsCommand(command)) {
+    } else if (validateBotsCommand(command) == 1) {
         // Lógica para o comando "bots"
         return 1;
-    } else if (validateBmovCommand(command)) {
+    } else if (validateBmovCommand(command) == 1) {
         // Lógica para o comando "bmov"
         return 1;
-    } else if (validateRbmCommand(command)) {
+    } else if (validateRbmCommand(command) == 1) {
         // Lógica para o comando "rbm"
         return 1;
-    } else if (validateBeginCommand(command)) {
+    } else if (validateBeginCommand(command) == 1) {
         // Lógica para o comando "begin"
         return 1;
-    } else if (validateEndCommand(command)) {
+    } else if (validateEndCommand(command) == 1) {
         // Lógica para o comando "end"
         return 1;
     } else {
+        printf("Comando desconhecido: %s\n", command);
         return 2;
     }
 

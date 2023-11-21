@@ -301,7 +301,7 @@ void recebeComandos(){
     fd = open(pipe, O_RDONLY);
     if(fd == -1){
         printf("Erro ao abrir pipe para leitura de Comandos!\n");
-        return 0;
+        return;
     }
 
     read(fd, &comando, TAM_NOME);

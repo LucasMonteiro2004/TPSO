@@ -47,6 +47,18 @@ char name[TAM_NOME];
 int pid;
 }player;
 
+void recebeLabirinto();
+void enviaCredenciais(char nome[TAM_NOME]);
+void enviaJogadas();
+void create_space_comands();
+void enviaComandos(char comando[TAM_NOME]);
+int validateUsersCommand(const char command[TAM_NOME]);
+int validateKickCommand(const char command[TAM_NOME]);
+int validateBotsCommand(const char command[TAM_NOME]);
+int validateBmovCommand(const char command[TAM_NOME]);
+int validateRbmCommand(const char command[TAM_NOME]);
+int validateBeginCommand(const char command[TAM_NOME]);
+int validaComandos(char command[TAM_NOME]);
+void exibeLabirintoJogadas();
 
 #endif
-
