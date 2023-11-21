@@ -308,11 +308,13 @@ int main(int argc, char *argv[]) {
         printf("Por favor insira seu nome");
     }
 
+    strcpy(user, argv[1]);
+
     initscr(); // Inicializa a biblioteca ncurses
     keypad(stdscr, TRUE); // Habilita as teclas especiais, como a tecla de espaço
 
+    enviaCredenciais(user);
     recebeLabirinto();
-    enviaCredenciais(argv[1]);
     enviaJogadas();
 
     endwin();

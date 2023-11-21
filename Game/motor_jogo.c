@@ -314,9 +314,9 @@ int main(int argc, char *argv[]) {
     char *arguments[] = {"./bot", "2", "3", NULL};
     
     inicializa();
+    NomeUtilizador();
     enviaLabirinto();
     recebeComandos();
-    NomeUtilizador();
     executaBot("./bot", arguments);
     recebeJogada();
     return 0;
