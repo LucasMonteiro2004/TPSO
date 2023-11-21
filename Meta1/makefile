@@ -10,4 +10,4 @@ bot: bot.c
 	gcc -o bot bot.c
 
 clean:
-	rm -f motor_jogo jogoUI bot PipeJogadas pipeNome
+	rm -f motor_jogo jogoUI bot

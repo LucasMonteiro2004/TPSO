@@ -176,7 +176,7 @@ player* criarArray(int tamanho) {
 
     for (int i = 0; i < tamanho; i++) {
         array[i].pid = -1;
-        strcpy(array[i].name, p.name);
+        strcpy(array[i].name, "");
     }
 
     // Retorna o ponteiro para o array alocado
