@@ -51,8 +51,11 @@ void recebeLabirinto() {
     int ch;
     while ((ch = getch()) != 10) { // 10 é o código ASCII para Enter
         if (ch == ' ') {
+            char comando[TAM_NOME];
             printw("Você entrou!\n");
             printw("Comando >> ");
+            getstr(comando);
+            enviaComandos(comando);
         }
     }
 
@@ -181,7 +184,7 @@ void create_space_comands() {
     endwin();
 }
 
-void enviaComandos(char *comando){
+void enviaComandos(char comando[TAM_NOME]){
     int fd;
     char *pipe = "PipeComandos";
 
@@ -194,9 +197,12 @@ void enviaComandos(char *comando){
     }
 
     if(validaComandos(comando) == 1){
-        write(fd, comando, sizeof(comando));
+        write(fd, comando, TAM_NOME);
+    }else if(validaComandos(comando) == 2){
+        char desconhecido[2] = "NA";
+        write(fd, desconhecido, 2);
     }else{
-        printf("impossivel enviar comando!!!");
+        printf("impossivel enviar comando!!!\n");
     }
 
     close(fd);
@@ -207,9 +213,6 @@ int validateUsersCommand(const char *command) {
     if (strcmp(command, "users") == 0) {
         printf("Comando users valido\n");
         return 1; // Comando valido
-    } else {
-        printf("Comando invalido\n");
-        return 0; // Comando invalido
     }
 }
 
@@ -219,10 +222,7 @@ int validateKickCommand(const char *command) {
     if (strncmp(command, prefix, strlen(prefix)) == 0) {
         printf("Comando kick valido para o jogador: %s\n", command + strlen(prefix));
         return 1; // Comando valido
-    } else {
-        printf("Comando invalido\n");
-        return 0; // Comando invalido
-    }
+    } 
 }
 
 // Função para validar o comando "bots"
@@ -230,9 +230,6 @@ int validateBotsCommand(const char *command) {
     if (strcmp(command, "bots") == 0) {
         printf("Comando bots valido\n");
         return 1; // Comando valido
-    } else {
-        printf("Comando invalido\n");
-        return 0; // Comando invalido
     }
 }
 
@@ -241,9 +238,6 @@ int validateBmovCommand(const char *command) {
     if (strcmp(command, "bmov") == 0) {
         printf("Comando bmov valido\n");
         return 1; // Comando valido
-    } else {
-        printf("Comando invalido\n");
-        return 0; // Comando invalido
     }
 }
 
@@ -252,9 +246,6 @@ int validateRbmCommand(const char *command) {
     if (strcmp(command, "rbm") == 0) {
         printf("Comando rbm valido\n");
         return 1; // Comando valido
-    } else {
-        printf("Comando invalido\n");
-        return 0; // Comando invalido
     }
 }
 
@@ -263,10 +254,7 @@ int validateBeginCommand(const char *command) {
     if (strcmp(command, "begin") == 0) {
         printf("Comando begin valido\n");
         return 1; // Comando valido
-    } else {
-        printf("Comando invalido\n");
-        return 0; // Comando invalido
-    }
+    } 
 }
 
 // Função para validar o comando "end"
@@ -274,9 +262,6 @@ int validateEndCommand(const char *command) {
     if (strcmp(command, "end") == 0) {
         printf("Comando end valido\n");
         return 1; // Comando valido
-    } else {
-        printf("Comando invalido\n");
-        return 0; // Comando invalido
     }
 }
 
@@ -284,20 +269,27 @@ int validaComandos(char *command){
     // Validar comandos
     if (validateUsersCommand(command)) {
         // Lógica para o comando "users"
+        return 1;
     } else if (validateKickCommand(command)) {
         // Lógica para o comando "kick"
+        return 1;
     } else if (validateBotsCommand(command)) {
         // Lógica para o comando "bots"
+        return 1;
     } else if (validateBmovCommand(command)) {
         // Lógica para o comando "bmov"
+        return 1;
     } else if (validateRbmCommand(command)) {
         // Lógica para o comando "rbm"
+        return 1;
     } else if (validateBeginCommand(command)) {
         // Lógica para o comando "begin"
+        return 1;
     } else if (validateEndCommand(command)) {
         // Lógica para o comando "end"
+        return 1;
     } else {
-        printf("Comando desconhecido\n");
+        return 2;
     }
 
 }

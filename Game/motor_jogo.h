@@ -37,10 +37,10 @@ char msg[50];
 char msgOwner[50];
 };
 
-struct commandLine{
+typedef struct commandLine{
 char line[50];
 char cmdOwner[50];
-};
+}commandLine;
 
 typedef struct player{
 char name[TAM_NOME];

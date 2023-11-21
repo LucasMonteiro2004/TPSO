@@ -292,11 +292,30 @@ void executaBot(const char *program_path, char *const arguments[]) {
     }
 }
 
+void recebeComandos(){
+    int fd;
+    char *pipe = "PipeComandos";
+
+    char comando[TAM_NOME];
+
+    fd = open(pipe, O_RDONLY);
+    if(fd == -1){
+        printf("Erro ao abrir pipe para leitura de Comandos!\n");
+        return 0;
+    }
+
+    read(fd, &comando, TAM_NOME);
+    close(fd);
+
+    printf("Comando >> %s\n", comando);
+}
+
 int main(int argc, char *argv[]) {
     char *arguments[] = {"./bot", "2", "3", NULL};
     
     inicializa();
     enviaLabirinto();
+    recebeComandos();
     NomeUtilizador();
     executaBot("./bot", arguments);
     recebeJogada();
