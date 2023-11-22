@@ -10,43 +10,29 @@
 
 player p;
 Bot bot;
+Coordenadas coor;
 
-char linha[80];
-int GRID_WIDTH = 0, GRID_HEIGHT = 0;
+void lerArquivoParaCoordenadas(const char *nomeArquivo, Coordenadas *dados) {
+    FILE *arquivo = fopen(nomeArquivo, "r");
 
-void calculaDimensoesLabirinto() {
-    FILE *file = fopen(arquivo, "r");
-    if (file == NULL) {
-        printf("Erro ao abrir o arquivo!\n");
-        return;
+    if (arquivo == NULL) {
+        perror("Erro ao abrir o arquivo");
+        exit(EXIT_FAILURE);
     }
 
-    char linha[1000]; // Tamanho máximo de uma linha (ajuste conforme necessário)
-    int linhas = 0;
+    dados->x = 0;
+    dados->y = 0;
 
-    while (fgets(linha, sizeof(linha), file)) {
-        int comprimentoLinha = strlen(linha);
-        if (comprimentoLinha > GRID_WIDTH) {
-            GRID_WIDTH = comprimentoLinha; // Atualiza a largura se a linha atual for mais longa
-        }
-        linhas++; // Conta o número de linhas
+    while (dados->x < MAX_LINHAS && fscanf(arquivo, "%s", dados->coordenates[dados->x]) == 1) {
+        (dados->x)++;
 
-        int colunasNaLinha = 0;
-        char *token = strtok(linha, " "); 
-
-        while (token != NULL) {
-            colunasNaLinha++;
-            token = strtok(NULL, " ");
-        }
-
-        if (colunasNaLinha > GRID_HEIGHT) {
-            GRID_HEIGHT= colunasNaLinha; // Atualiza o número máximo de colunas
+        if (fgetc(arquivo) == '\n') {
+            (dados->y)++;
+            dados->x = 0;
         }
     }
 
-    GRID_HEIGHT = linhas; // Define a altura como o número de linhas lidas
-
-    fclose(file);
+    fclose(arquivo);
 }
 
 void enviaLabirinto() {
@@ -114,17 +100,17 @@ void NomeUtilizador() {
 }
 
 int is_obstacle(int x, int y, const char *grid) {
-    if (x < 0 || x >= GRID_WIDTH || y < 0 || y >= GRID_HEIGHT) {
+    if (x < 0 || x >= coor.x || y < 0 || y >= coor.y) {
         return 1; // Fora dos limites da grade é considerado um obstáculo
     }
-    return grid[y * GRID_WIDTH + x] == 'X';
+    return grid[y * coor.x + x] == 'X';
 }
 
 int is_Fim(int x, int y, const char *grid) {
-    if (x < 0 || x >= GRID_WIDTH || y < 0 || y >= GRID_HEIGHT) {
+    if (x < 0 || x >= coor.x || y < 0 || y >= coor.y) {
         return 0; // Fora dos limites da grade não é o fim
     }
-    return grid[y * GRID_WIDTH + x] == 'F';
+    return grid[y * coor.x + x] == 'F';
 }
 
 void inicializa(){
@@ -175,13 +161,13 @@ int processaJogada(int *playerX, int *playerY, int jogada, const char *labirinto
     int new_x = *playerX;
     int new_y = *playerY;
 
-    if (jogada == 1 && labirinto[new_y * GRID_WIDTH + new_x + 1] != 'X') {
+    if (jogada == 1 && labirinto[new_y * coor.x + new_x + 1] != 'X') {
         new_x++;
-    } else if (jogada == 2 && labirinto[new_y * GRID_WIDTH + new_x - 1] != 'X') {
+    } else if (jogada == 2 && labirinto[new_y * coor.x + new_x - 1] != 'X') {
         new_x--;
-    } else if (jogada == 3 && labirinto[(new_y - 1) * GRID_WIDTH + new_x] != 'X') {
+    } else if (jogada == 3 && labirinto[(new_y - 1) * coor.x + new_x] != 'X') {
         new_y--;
-    } else if (jogada == 4 && labirinto[(new_y + 1) * GRID_WIDTH + new_x] != 'X') {
+    } else if (jogada == 4 && labirinto[(new_y + 1) * coor.x + new_x] != 'X') {
         new_y++;
     }
 
