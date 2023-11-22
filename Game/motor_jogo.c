@@ -204,7 +204,7 @@ void executaBot(const char *program_path) {
 
         // Redireciona a saída padrão para a extremidade de escrita do pipe
         if (dup(pipe_fd[1]) == -1) {
-            perror("Erro ao redirecionar saída padrão para o pipe");
+            perror("Erro ao redirecionar saída padrao para o pipe");
             exit(EXIT_FAILURE);
         }
 
