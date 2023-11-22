@@ -9,6 +9,7 @@
 #include "motor_jogo.h"
 
 player p;
+Bot bot;
 
 char linha[80];
 int GRID_WIDTH = 0, GRID_HEIGHT = 0;
@@ -262,7 +263,10 @@ void executaBot(const char *program_path, char *const arguments[]) {
         close(pipe_fd[0]);
 
         // Redireciona a saída padrão para a extremidade de escrita do pipe
-        dup2(pipe_fd[1], STDOUT_FILENO);
+        if (dup(pipe_fd[1]) == -1) {
+            perror("Erro ao redirecionar saída padrão para o pipe");
+            exit(EXIT_FAILURE);
+        }
 
         // Fecha a extremidade de escrita do pipe
         close(pipe_fd[1]);
@@ -275,20 +279,10 @@ void executaBot(const char *program_path, char *const arguments[]) {
         // Fecha a extremidade de escrita do pipe
         close(pipe_fd[1]);
 
-        FILE *pipe_stream = fdopen(pipe_fd[0], "r");
-        if (pipe_stream == NULL) {
-            perror("Erro ao abrir o fluxo do pipe");
-            exit(EXIT_FAILURE);
-        }
-
-        fscanf(pipe_stream, "%d %d %d", &bot.x, &bot.y, &bot.duration);
-
-        fclose(pipe_stream);
+        read(pipe_fd[0], &bot, sizeof(bot));
 
         // Aguarda o término do processo filho
         wait(NULL);
-
-        printf("RECEBI do bot: %d %d %d\n", bot.x, bot.y, bot.duration);
     }
 }
 

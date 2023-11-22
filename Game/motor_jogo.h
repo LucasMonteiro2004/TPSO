@@ -23,11 +23,11 @@ struct Coordenadas{
     int y;
 };
 
-struct Bot {
+typedef struct Bot {
     int x;
     int y;
     int duration;
-};
+}Bot;
 
 struct CommandAdmin {
     char name[MAX_COMMAND_LENGTH];
