@@ -82,10 +82,8 @@ void NomeUtilizador() {
         return;
     }
 
-    //p.name = strdup(nome);
 
     printf("Nome: %s\nPID: %d\n", p.name, p.pid);
-    //free(p.name);
 
     close(fd);
 }
@@ -183,7 +181,7 @@ void jogoLoop(int playerX, int playerY, const char *labirinto) {
 }
 
 
-void executaBot(const char *program_path, char *const arguments[]) {
+void executaBot(const char *program_path) {
     pid_t pid;
     struct Bot bot;
     int pipe_fd[2];
@@ -213,7 +211,7 @@ void executaBot(const char *program_path, char *const arguments[]) {
         // Fecha a extremidade de escrita do pipe
         close(pipe_fd[1]);
 
-        execvp(program_path, arguments);
+        execl(program_path, "./bot","2", "3", NULL);
 
         perror("Erro ao executar o programa bot");
         exit(EXIT_FAILURE);
@@ -247,12 +245,11 @@ void recebeComandos(){
 }
 
 int main(int argc, char *argv[]) {
-    char *arguments[] = {"./bot", "2", "3", NULL};
     inicializa();
     NomeUtilizador();
     enviaLabirinto();
     recebeComandos();
-    executaBot("./bot", arguments);
+    executaBot("./bot");
     recebeJogada();
     return 0;
 }
