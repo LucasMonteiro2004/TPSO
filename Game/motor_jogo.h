@@ -8,6 +8,8 @@
 #define TAM_NOME 20
 #define TAMANHO_MAX 3000
 
+#include <stdio.h>
+
 char user[TAM_NOME];
 
 char *arquivo = "labirinto1.txt";
@@ -18,10 +20,9 @@ struct BotMessage {
     char content[MAX_COMMAND_LENGTH];
 };
 
-struct Coordenadas{
-    int x;
-    int y;
-};
+typedef struct Coordenadas{
+    char coordenates[19][61];
+}Coordenadas;
 
 typedef struct Bot {
     int x;
