@@ -12,28 +12,12 @@ player p;
 Bot bot;
 Coordenadas coor;
 
-void lerArquivoParaCoordenadas(const char *nomeArquivo, Coordenadas *dados) {
-    FILE *arquivo = fopen(nomeArquivo, "r");
-
-    if (arquivo == NULL) {
-        perror("Erro ao abrir o arquivo");
-        exit(EXIT_FAILURE);
-    }
-
-    dados->x = 0;
-    dados->y = 0;
-
-    while (dados->x < MAX_LINHAS && fscanf(arquivo, "%s", dados->coordenates[dados->x]) == 1) {
-        (dados->x)++;
-
-        if (fgetc(arquivo) == '\n') {
-            (dados->y)++;
-            dados->x = 0;
-        }
-    }
-
-    fclose(arquivo);
-}
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 
 void enviaLabirinto() {
     int fd;
@@ -41,17 +25,22 @@ void enviaLabirinto() {
 
     mkfifo(pipeNomeado, 0666); // Criação do pipe
 
-    char mensagem_enviada[TAMANHO_MAX];
+    char mensagem_enviada[MAX_LINHAS][MAX_COLUNAS + 1]; // +1 para o caractere nulo
 
-    FILE *file = fopen(arquivo, "r");
+    FILE *file = fopen(arquivo, "rt");
     if (file == NULL) {
         printf("Erro ao abrir o arquivo!\n");
         return;
     }
 
     // Leitura do conteúdo do arquivo
-    size_t bytesRead = fread(mensagem_enviada, sizeof(char), TAMANHO_MAX - 1, file);
-    mensagem_enviada[bytesRead] = '\0'; // Adiciona terminação da string
+    for (int i = 0; i < MAX_LINHAS; i++) {
+        if (fgets(mensagem_enviada[i], MAX_COLUNAS + 1, file) == NULL) {
+            printf("Erro ao ler o labirinto do arquivo!\n");
+            fclose(file);
+            return;
+        }
+    }
 
     fd = open(pipeNomeado, O_WRONLY);
     if (fd == -1) {
@@ -61,7 +50,9 @@ void enviaLabirinto() {
     }
 
     // Escreve no pipe
-    write(fd, mensagem_enviada, strlen(mensagem_enviada));
+    for (int i = 0; i < MAX_LINHAS; i++) {
+        write(fd, mensagem_enviada[i], strlen(mensagem_enviada[i]));
+    }
 
     close(fd);
     fclose(file);
@@ -257,7 +248,6 @@ void recebeComandos(){
 
 int main(int argc, char *argv[]) {
     char *arguments[] = {"./bot", "2", "3", NULL};
-    
     inicializa();
     NomeUtilizador();
     enviaLabirinto();

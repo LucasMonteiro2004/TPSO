@@ -1,19 +1,15 @@
-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX 
-X                                                          X 
-X                                                          X 
-X                                                          X 
-X                                                          X 
-X                                                          X 
-X                                                          X 
-X                                                          X 
-X                                                          X                            
-X                                                          X 
-X                                                          X 
-X                                                          X 
-X                                                          X 
-X                                                          X 
-X                                                          X                   
-X                                                          X 
-X                                                          X 
-X                                                          X 
-XXXXXXXXXXXXXXXXXXXXXXXXXXXFFFXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX 
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX 
+X                                     X 
+X                                     X 
+X                                     X 
+X                                     X 
+X                                     X 
+X                                     X 
+X                                     X 
+X                                     X                            
+X                                     X 
+X                                     X 
+X                                     X 
+X                                     X 
+X                                     X
+XXXXXXXXXXXXXXXXXXXXXXXXXXXFFFXXXXXXXXX 
