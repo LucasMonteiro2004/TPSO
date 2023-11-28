@@ -46,3 +46,7 @@ void recebeLabirinto() {
 
     close(fd);
 }
+
+int main(){
+    recebeLabirinto();
+}

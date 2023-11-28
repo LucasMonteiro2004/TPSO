@@ -24,10 +24,14 @@ void enviaLabirinto() {
     // Lê os elementos do arquivo e os armazena na matriz
     for (int i = 0; i < linhas; i++) {
         for (int j = 0; j < colunas; j++) {
-            fscanf(file, "%d", &lab[i][j]);
+            fscanf(file, "%c", &lab[i][j]);
         }
     }
     
     close(fd);
     fclose(file);
+}
+
+int main(){
+    enviaLabirinto();
 }
