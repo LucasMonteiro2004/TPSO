@@ -1,5 +1,7 @@
 #include "header.h"
 
+Coordenadas lab;
+
 void recebeLabirinto() {
     int fd;
 
@@ -9,21 +11,31 @@ void recebeLabirinto() {
         return;
     }
 
-    char lab[MAX_LINHAS][MAX_COLUNAS + 1]; 
+    int bytesRead = 0;
 
-    int bytesRead = read(fd, lab, sizeof(lab));
+    bytesRead = read(fd, &lab, sizeof(Coordenadas));
+
     if (bytesRead == -1) {
         printf("Erro ao ler do pipe!\n");
         close(fd);
         return;
     }
 
+    for (int i = 0; i < MAX_LINHAS; i++) {
+        for (int j = 0; i < MAX_COLUNAS; i++)
+        {
+            if(lab.coordenates[i][j] == 'F') {
+            lab.coordenates[i][j] = ' ';
+            }
+        }
+    }
+
     // Inicializa o modo ncurses
     initscr();
 
-    for (int i = 0; i < linhas; i++) {
-        for (int j = 0; j < colunas; j++) {
-            printw("%d ", lab[i][j]);
+    for (int i = 0; i < MAX_LINHAS; i++) {
+        for (int j = 0; j < MAX_COLUNAS; j++) {
+            printw("%c ", lab.coordenates[i][j]);
         }
         printw("\n");
     }

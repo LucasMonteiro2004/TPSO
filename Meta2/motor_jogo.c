@@ -1,9 +1,12 @@
 #include "header.h"
 
+Coordenadas lab;
+
 void enviaLabirinto() {
     int fd;
-    mkfifo(pipeMotor, 0666); // Criação do pipe
-    char lab[MAX_LINHAS][MAX_COLUNAS + 1]; // +1 para o caractere nulo
+    mkfifo(pipeMotor, 0666);
+
+    fd = open(pipeMotor, O_WRONLY);
 
     FILE *file = fopen(arquivo, "rt");
     if (file == NULL) {
@@ -11,23 +14,14 @@ void enviaLabirinto() {
         return;
     }
 
-    // Lê o número de linhas e colunas do arquivo
-    fscanf(file, "%d %d", &linhas, &colunas);
-
-    // Verifica se os valores lidos são válidos
-    if (linhas > MAX_LINHAS || colunas > MAX_COLUNAS) {
-        fprintf(stderr, "Tamanho da matriz excede os limites.\n");
-        fclose(file);
-        return;
-    }
-
-    // Lê os elementos do arquivo e os armazena na matriz
-    for (int i = 0; i < linhas; i++) {
-        for (int j = 0; j < colunas; j++) {
-            fscanf(file, "%c", &lab[i][j]);
+    for (int i = 0; i < MAX_LINHAS; i++) {
+        for (int j = 0; j < MAX_COLUNAS; j++) {
+            fscanf(file, " %c", &lab.coordenates[i][j]);
         }
     }
-    
+
+    write(fd, &lab, sizeof(Coordenadas));
+
     close(fd);
     fclose(file);
 }
