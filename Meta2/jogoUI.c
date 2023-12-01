@@ -21,24 +21,15 @@ void recebeLabirinto() {
         return;
     }
 
-    for (int i = 0; i < MAX_LINHAS; i++) {
-        for (int j = 0; j < MAX_COLUNAS; j++) {
-            if (lab.coordenates[i][j] == 'F') {
-                lab.coordenates[i][j] = ' ';
-            }
-        }
-    }
-
     // Inicializa o modo ncurses
     initscr();
 
-    for (int j = 0; j < MAX_COLUNAS; j++) {
-        for (int i = 0; i < MAX_LINHAS; i++) {
+    for (int i = 0; i < MAX_LINHAS; i++) {
+        for (int j = 0; j < MAX_COLUNAS; j++) {
             printw("%c ", lab.coordenates[i][j]);
         }
         printw("\n");
     }
-
 
     // Adiciona a segunda área
     printw("Pressione ' ' para entrar no terminal de comandos e Enter para sair\n");

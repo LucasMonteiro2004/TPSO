@@ -17,9 +17,12 @@ void enviaLabirinto() {
     for (int i = 0; i < MAX_LINHAS; i++) {
         for (int j = 0; j < MAX_COLUNAS; j++) {
             fscanf(file, " %c", &lab.coordenates[i][j]);
+            // Verifica se o caractere lido não é 'X' e, se não for, substitui por espaço.
+            if (lab.coordenates[i][j] == 'F') {
+                lab.coordenates[i][j] = ' ';
+            }
         }
     }
-
 
     write(fd, &lab, sizeof(Coordenadas));
 
