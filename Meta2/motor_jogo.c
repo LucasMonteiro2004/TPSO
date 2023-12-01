@@ -20,6 +20,7 @@ void enviaLabirinto() {
         }
     }
 
+
     write(fd, &lab, sizeof(Coordenadas));
 
     close(fd);

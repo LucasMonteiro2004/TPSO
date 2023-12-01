@@ -22,10 +22,9 @@ void recebeLabirinto() {
     }
 
     for (int i = 0; i < MAX_LINHAS; i++) {
-        for (int j = 0; i < MAX_COLUNAS; i++)
-        {
-            if(lab.coordenates[i][j] == 'F') {
-            lab.coordenates[i][j] = ' ';
+        for (int j = 0; j < MAX_COLUNAS; j++) {
+            if (lab.coordenates[i][j] == 'F') {
+                lab.coordenates[i][j] = ' ';
             }
         }
     }
@@ -33,12 +32,13 @@ void recebeLabirinto() {
     // Inicializa o modo ncurses
     initscr();
 
-    for (int i = 0; i < MAX_LINHAS; i++) {
-        for (int j = 0; j < MAX_COLUNAS; j++) {
+    for (int j = 0; j < MAX_COLUNAS; j++) {
+        for (int i = 0; i < MAX_LINHAS; i++) {
             printw("%c ", lab.coordenates[i][j]);
         }
         printw("\n");
     }
+
 
     // Adiciona a segunda área
     printw("Pressione ' ' para entrar no terminal de comandos e Enter para sair\n");
