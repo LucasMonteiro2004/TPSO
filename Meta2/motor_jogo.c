@@ -14,9 +14,9 @@ void enviaLabirinto() {
         return;
     }
 
-    for (int i = 0; i < MAX_LINHAS; i++) {
-        for (int j = 0; j < MAX_COLUNAS; j++) {
-            fscanf(file, " %c", &lab.coordenates[i][j]);
+    for (int y = 0; y < MAX_LINHAS; y++) {
+        for (int x = 0; x < MAX_COLUNAS; x++) {
+            fscanf(file, " %c", &lab.coordenates[y][x]);
         }
     }
 

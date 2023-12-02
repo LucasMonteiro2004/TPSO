@@ -3,18 +3,19 @@
 Coordenadas lab;
 
 // Função para verificar se uma posição contém um obstáculo ('X')
-int is_obstacle(int x, int y, const char *grid) {
-    if (x < 0 || x >= MAX_COLUNAS || y < 0 || y >= MAX_LINHAS) {
-        return 1; // Fora dos limites da grade é considerado um obstáculo
+int is_obstacle(int x, int y, const char grid[MAX_COLUNAS][MAX_LINHAS]) {
+    if (x < 0 || x >= MAX_COLUNAS || y < 0 || y >= MAX_LINHAS || grid[y][x] == 'X') {
+        return 1; // Fora dos limites da grade ou obstáculo ('X')
     }
-    return grid[y * MAX_COLUNAS + x] == '#';
+    return 0;
 }
 
-int is_Fim(int x, int y, const char *grid) {
+
+int is_Fim(int x, int y, const char grid[MAX_COLUNAS][MAX_LINHAS]) {
     if (x < 0 || x >= MAX_COLUNAS || y < 0 || y >= MAX_LINHAS) {
         return 0; // Fora dos limites da grade não é o fim
     }
-    return grid[y * MAX_COLUNAS + x] == 'F';
+    return grid[y][x] == 'F';
 }
 
 void recebecoordenates(int playerX, int playerY, char playerSymbol) {
@@ -51,6 +52,8 @@ void recebecoordenates(int playerX, int playerY, char playerSymbol) {
                 mvaddch(y, x, 'X');
             } else if (lab.coordenates[y][x] == ' ') {
                 mvaddch(y, x, ' ');
+            }else{
+                mvaddch(y, x, '\n');
             }
         }
     }
