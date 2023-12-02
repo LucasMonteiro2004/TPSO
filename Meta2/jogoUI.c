@@ -4,7 +4,7 @@ Coordenadas lab;
 
 // Função para verificar se uma posição contém um obstáculo ('X')
 int is_obstacle(int x, int y, const char grid[MAX_LINHAS][MAX_COLUNAS]) {
-    if (x < 0 || x >= MAX_LINHAS || y < 0 || y >= MAX_COLUNAS || grid[y][x] == 'X') {
+    if (x < 0 || x >= MAX_COLUNAS || y < 0 || y >= MAX_LINHAS || grid[y][x] == 'X') {
         return 1; // Fora dos limites da grade ou obstáculo ('X')
     }
     return 0;
@@ -12,7 +12,7 @@ int is_obstacle(int x, int y, const char grid[MAX_LINHAS][MAX_COLUNAS]) {
 
 
 int is_Fim(int x, int y, const char grid[MAX_LINHAS][MAX_COLUNAS]) {
-    if (x < 0 || x >= MAX_LINHAS || y < 0 || y >= MAX_COLUNAS) {
+    if (x < 0 || x >= MAX_COLUNAS || y < 0 || y >= MAX_LINHAS) {
         return 0; // Fora dos limites da grade não é o fim
     }
     return grid[y][x] == 'F';
@@ -86,7 +86,7 @@ void recebecoordenates(int playerX, int playerY, char playerSymbol) {
         }
 
         if (is_Fim(playerX, playerY, lab.coordenates)) {
-            mvprintw(MAX_LINHAS + 1, 0, "Parabens! O jogador chegou ao fim!!!");
+            mvprintw(MAX_LINHAS + 2, 0, "Parabens! O jogador chegou ao fim!!!");
             refresh();
             break;
         }
@@ -95,7 +95,7 @@ void recebecoordenates(int playerX, int playerY, char playerSymbol) {
     getch();
 
     // Adiciona a segunda área
-    printw("Pressione ' ' para entrar no terminal de comandos e Enter para sair\n");
+    mvprintw(MAX_LINHAS + 1, 0,"Pressione ' ' para entrar no terminal de comandos e Enter para sair\n");
 
     int ch;
     while ((ch = getch()) != 10) { // 10 é o código ASCII para Enter
