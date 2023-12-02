@@ -14,8 +14,7 @@
 #define NUM_PLAYERS 5
 #define TAM_NOME 20
 #define MAX_LINHAS 15
-#define MAX_COLUNAS 40
-#define MAX_LENGTH 600
+#define MAX_COLUNAS 41
 
 char user[TAM_NOME];
 char *arquivo = "labirinto1.txt";

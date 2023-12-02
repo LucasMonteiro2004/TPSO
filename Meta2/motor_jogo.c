@@ -26,6 +26,7 @@ void enviaLabirinto() {
     fclose(file);
 }
 
+
 int main(){
     enviaLabirinto();
 }
