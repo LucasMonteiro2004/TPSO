@@ -86,7 +86,7 @@ void recebecoordenates(int playerX, int playerY, char playerSymbol) {
         }
 
         if (is_Fim(playerX, playerY, lab.coordenates)) {
-            mvprintw(MAX_LINHAS + 2, 0, "Parabens! O jogador chegou ao fim!!!");
+            mvprintw(7, 50, "Parabens! O jogador chegou ao fim!!!");
             refresh();
             break;
         }
