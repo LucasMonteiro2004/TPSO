@@ -51,7 +51,7 @@ void recebecoordenates(int playerX, int playerY, char playerSymbol) {
                 printw("%c", lab.coordenates[y][x]);
             }else if(lab.coordenates[y][x] == '\0'){
                 printw("\n");
-            } else {
+            } else if(lab.coordenates[y][x] == '.'){
                 printw(" ");
             }
         }
