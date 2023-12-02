@@ -29,7 +29,7 @@ struct BotMessage {
 };
 
 typedef struct Coordenadas{
-    char coordenates[MAX_COLUNAS][MAX_LINHAS];
+    char coordenates[MAX_LINHAS][MAX_COLUNAS];
 }Coordenadas;
 
 typedef struct Bot {

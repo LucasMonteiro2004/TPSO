@@ -47,13 +47,7 @@ void recebecoordenates(int playerX, int playerY, char playerSymbol) {
     int x, y;
     for (y = 0; y < MAX_LINHAS; y++) {
         for (x = 0; x < MAX_COLUNAS; x++) {
-            if (lab.coordenates[y][x] == 'X') {
-                printw("%c", lab.coordenates[y][x]);
-            }else if(lab.coordenates[y][x] == '\0'){
-                printw("\n");
-            } else if(lab.coordenates[y][x] == '.'){
-                printw(" ");
-            }
+            printw("%c", lab.coordenates[y][x]);
         }
     }
 
