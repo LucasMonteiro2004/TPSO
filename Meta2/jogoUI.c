@@ -38,7 +38,6 @@ void recebecoordenates(int playerX, int playerY, char playerSymbol) {
     }
 
     // Inicializa o modo ncurses
-    // Inicializa o modo ncurses
     initscr(); // Inicializa NCurses
     raw();
     keypad(stdscr, TRUE);
