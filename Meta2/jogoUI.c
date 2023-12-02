@@ -3,16 +3,16 @@
 Coordenadas lab;
 
 // Função para verificar se uma posição contém um obstáculo ('X')
-int is_obstacle(int x, int y, const char grid[MAX_COLUNAS][MAX_LINHAS]) {
-    if (x < 0 || x >= MAX_COLUNAS || y < 0 || y >= MAX_LINHAS || grid[y][x] == 'X') {
+int is_obstacle(int x, int y, const char grid[MAX_LINHAS][MAX_COLUNAS]) {
+    if (x < 0 || x >= MAX_LINHAS || y < 0 || y >= MAX_COLUNAS || grid[y][x] == 'X') {
         return 1; // Fora dos limites da grade ou obstáculo ('X')
     }
     return 0;
 }
 
 
-int is_Fim(int x, int y, const char grid[MAX_COLUNAS][MAX_LINHAS]) {
-    if (x < 0 || x >= MAX_COLUNAS || y < 0 || y >= MAX_LINHAS) {
+int is_Fim(int x, int y, const char grid[MAX_LINHAS][MAX_COLUNAS]) {
+    if (x < 0 || x >= MAX_LINHAS || y < 0 || y >= MAX_COLUNAS) {
         return 0; // Fora dos limites da grade não é o fim
     }
     return grid[y][x] == 'F';
