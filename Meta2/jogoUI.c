@@ -52,8 +52,6 @@ void recebecoordenates(int playerX, int playerY, char playerSymbol) {
                 mvaddch(y, x, 'X');
             } else if (lab.coordenates[y][x] == ' ') {
                 mvaddch(y, x, ' ');
-            }else{
-                mvaddch(y, x, '\n');
             }
         }
     }

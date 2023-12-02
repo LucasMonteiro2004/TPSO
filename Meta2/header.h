@@ -15,6 +15,7 @@
 #define TAM_NOME 20
 #define MAX_LINHAS 15
 #define MAX_COLUNAS 40
+#define MAX_LENGTH 600
 
 char user[TAM_NOME];
 char *arquivo = "labirinto1.txt";
@@ -22,8 +23,6 @@ char *arquivo1 = "labirinto2.txt";
 char *arquivo2 = "labirinto3.txt";
 char *pipeMotor = "pipe_motor";
 char *pipeJogoUI = "pipe_ui";
-
-int linhas, colunas;
 
 struct BotMessage {
     char content[MAX_COMMAND_LENGTH];
