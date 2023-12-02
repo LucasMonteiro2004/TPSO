@@ -39,9 +39,9 @@ void recebecoordenates(int playerX, int playerY, char playerSymbol) {
 
     // Inicializa o modo ncurses
     initscr(); // Inicializa NCurses
-    raw();
+    raw(); // entrada de caracteres é passada para o programa imediatamente, sem a necessidade de pressionar Enter
     keypad(stdscr, TRUE);
-    noecho();
+    noecho(); // desativa a exibição automática dos caracteres digitados pelo usuário.
     curs_set(0); // Oculta o cursor
 
     int x, y;
@@ -99,6 +99,9 @@ void recebecoordenates(int playerX, int playerY, char playerSymbol) {
 
     int ch;
     while ((ch = getch()) != 10) { // 10 é o código ASCII para Enter
+        noraw(); // inverso do raw
+        echo(); // inverso de noecho
+        curs_set(1); // ativa a exibição do cursor
         if (ch == ' ') {
             char comando[TAM_NOME];
             printw("Você entrou!\n");
