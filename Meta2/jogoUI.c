@@ -49,9 +49,13 @@ void recebecoordenates(int playerX, int playerY, char playerSymbol) {
     for (y = 0; y < MAX_LINHAS; y++) {
         for (x = 0; x < MAX_COLUNAS; x++) {
             if (lab.coordenates[y][x] == 'X') {
-                mvaddch(y, x, 'X');
-            } else if (lab.coordenates[y][x] == ' ') {
-                mvaddch(y, x, ' ');
+                //mvaddch(y, x, 'X');
+                printw("%c", lab.coordenates[y][x]);
+            }else if(lab.coordenates[y][x] == '\0'){
+                printw("\n");
+            } else {
+                //mvaddch(y, x, ' ');
+                printw(" ");
             }
         }
     }
