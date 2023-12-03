@@ -56,3 +56,8 @@ typedef struct player{
 char name[TAM_NOME];
 int pid;
 }player;
+
+int validaComandos(char *command);
+int is_obstacle(int x, int y, const char grid[MAX_LINHAS][MAX_COLUNAS]);
+int is_Fim(int x, int y, const char grid[MAX_LINHAS][MAX_COLUNAS]);
+void recebecoordenates(int playerX, int playerY, char playerSymbol);
