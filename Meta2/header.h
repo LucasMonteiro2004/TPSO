@@ -15,6 +15,7 @@
 #define TAM_NOME 20
 #define MAX_LINHAS 15
 #define MAX_COLUNAS 41
+#define TAM_CLIENTES 5
 
 char user[TAM_NOME];
 char *arquivo = "labirinto1.txt";
@@ -55,7 +56,7 @@ char cmdOwner[50];
 typedef struct player{
 char name[TAM_NOME];
 int pid;
-}player;
+}Player;
 
 int validaComandos(char *command);
 int is_obstacle(int x, int y, const char grid[MAX_LINHAS][MAX_COLUNAS]);

@@ -115,105 +115,20 @@ void recebecoordenates(int playerX, int playerY, char playerSymbol) {
     close(fd);
 }
 
+void enviaCredenciais(char nome[TAM_NOME]){
+    Player p;
 
-// Função para validar o comando "users"
-int validateUsersCommand(const char *command) {
-    if (strcmp(command, "users") == 0) {
-        printf("Comando users valido\n");
-        return 1; // Comando valido
-    } else {
-        printf("Comando invalido\n");
-        return 0; // Comando invalido
-    }
-}
+    int fd;
+    mkfifo(pipeJogoUI, 0666);
 
-// Função para validar o comando "kick"
-int validateKickCommand(const char *command) {
-    const char *prefix = "kick ";
-    if (strncmp(command, prefix, strlen(prefix)) == 0) {
-        printf("Comando kick valido para o jogador: %s\n", command + strlen(prefix));
-        return 1; // Comando valido
-    } else {
-        printf("Comando invalido\n");
-        return 0; // Comando invalido
-    }
-}
+    fd = open(pipeJogoUI, O_WRONLY);
 
-// Função para validar o comando "bots"
-int validateBotsCommand(const char *command) {
-    if (strcmp(command, "bots") == 0) {
-        printf("Comando bots valido\n");
-        return 1; // Comando valido
-    } else {
-        printf("Comando invalido\n");
-        return 0; // Comando invalido
-    }
-}
+    strcpy(p.name, nome);
+    p.pid = getpid();
 
-// Função para validar o comando "bmov"
-int validateBmovCommand(const char *command) {
-    if (strcmp(command, "bmov") == 0) {
-        printf("Comando bmov valido\n");
-        return 1; // Comando valido
-    } else {
-        printf("Comando invalido\n");
-        return 0; // Comando invalido
-    }
-}
+    write(fd, &p, sizeof(Player));
 
-// Função para validar o comando "rbm"
-int validateRbmCommand(const char *command) {
-    if (strcmp(command, "rbm") == 0) {
-        printf("Comando rbm valido\n");
-        return 1; // Comando valido
-    } else {
-        printf("Comando invalido\n");
-        return 0; // Comando invalido
-    }
-}
-
-// Função para validar o comando "begin"
-int validateBeginCommand(const char *command) {
-    if (strcmp(command, "begin") == 0) {
-        printf("Comando begin valido\n");
-        return 1; // Comando valido
-    } else {
-        printf("Comando invalido\n");
-        return 0; // Comando invalido
-    }
-}
-
-// Função para validar o comando "end"
-int validateEndCommand(const char *command) {
-    if (strcmp(command, "end") == 0) {
-        printf("Comando end valido\n");
-        return 1; // Comando valido
-    } else {
-        printf("Comando invalido\n");
-        return 0; // Comando invalido
-    }
-}
-
-int validaComandos(char *command){
-    // Validar comandos
-    if (validateUsersCommand(command)) {
-        // Lógica para o comando "users"
-    } else if (validateKickCommand(command)) {
-        // Lógica para o comando "kick"
-    } else if (validateBotsCommand(command)) {
-        // Lógica para o comando "bots"
-    } else if (validateBmovCommand(command)) {
-        // Lógica para o comando "bmov"
-    } else if (validateRbmCommand(command)) {
-        // Lógica para o comando "rbm"
-    } else if (validateBeginCommand(command)) {
-        // Lógica para o comando "begin"
-    } else if (validateEndCommand(command)) {
-        // Lógica para o comando "end"
-    } else {
-        printf("Comando desconhecido\n");
-    }
-
+    close(fd);
 }
 
 int main(){
