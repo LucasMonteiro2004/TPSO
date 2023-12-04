@@ -1,6 +1,7 @@
 #include "header.h"
 
 Coordenadas lab;
+Player p;
 
 // Função para verificar se uma posição contém um obstáculo ('X')
 int is_obstacle(int x, int y, const char grid[MAX_LINHAS][MAX_COLUNAS]) {
@@ -116,8 +117,6 @@ void recebecoordenates(int playerX, int playerY, char playerSymbol) {
 }
 
 void enviaCredenciais(char nome[TAM_NOME]){
-    Player p;
-
     int fd;
     mkfifo(pipeJogoUI, 0666);
 
@@ -131,6 +130,12 @@ void enviaCredenciais(char nome[TAM_NOME]){
     close(fd);
 }
 
-int main(){
-    recebecoordenates( 1, 1, 'L');
+int main(int argc, char *argv[]){
+    if(argc != 2){
+        printf("Em falta [NOME]");
+    }
+
+    strcpy(user, p.name);
+
+    recebecoordenates( 1, 1, user[0]);
 }

@@ -185,6 +185,11 @@ void recebeCredenciais(Player players[TAM_CLIENTES]){
         printf("Erro: O array de players está cheio.\n");
     }
 
+    for (int i = 0; i < TAM_CLIENTES; i++)
+    {
+        printf("player %d %s %d", i, players->name, players->pid);
+    }
+    
     close(fd);
 }
 
