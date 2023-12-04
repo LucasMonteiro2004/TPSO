@@ -18,8 +18,11 @@ int is_Fim(int x, int y, const char grid[MAX_LINHAS][MAX_COLUNAS]) {
     return grid[y][x] == 'F';
 }
 
-void recebecoordenates(int playerX, int playerY, char playerSymbol) {
+void recebecoordenates(int playerX, int playerY, char username[TAM_NOME]) {
     int fd;
+
+    enviaCredenciais(username);
+    char playerSymbol = username[0];
 
     fd = open(pipeMotor, O_RDONLY);
     if (fd == -1) {
@@ -134,8 +137,5 @@ int main(int argc, char *argv[]){
     if(argc != 2){
         printf("Em falta [NOME]");
     }
-
-    strcpy(user, p.name);
-
-    recebecoordenates( 1, 1, user[0]);
+    recebecoordenates( 1, 1, user);
 }

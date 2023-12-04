@@ -61,4 +61,5 @@ int pid;
 int validaComandos(char *command);
 int is_obstacle(int x, int y, const char grid[MAX_LINHAS][MAX_COLUNAS]);
 int is_Fim(int x, int y, const char grid[MAX_LINHAS][MAX_COLUNAS]);
-void recebecoordenates(int playerX, int playerY, char playerSymbol);
+void recebecoordenates(int playerX, int playerY, char username[TAM_NOME]);
+void enviaCredenciais(char nome[TAM_NOME]);

@@ -162,7 +162,7 @@ int validaComandos(char *command){
 
 }
 
-void recebeCredenciais(Player players[TAM_CLIENTES]){
+void recebeCredenciais(){
     int fd;
 
     fd = open(pipeJogoUI, O_RDONLY);
@@ -195,5 +195,6 @@ void recebeCredenciais(Player players[TAM_CLIENTES]){
 
 int main(){
     enviaLabirinto();
+    recebeCredenciais();
     lancaBot();
 }
