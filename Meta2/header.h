@@ -7,6 +7,7 @@
 #include <sys/wait.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <pthread.h>
 #include <ncurses.h>
 
 #define MAX_BOT_MESSAGES 100

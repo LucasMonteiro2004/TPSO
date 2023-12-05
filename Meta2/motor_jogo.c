@@ -1,7 +1,7 @@
 #include "header.h"
 
+pthread_t thread[2];
 Coordenadas lab;
-
 Player players[TAM_CLIENTES];
 
 void enviaLabirinto() {
@@ -28,7 +28,7 @@ void enviaLabirinto() {
     fclose(file);
 }
 
-void lancaBot(){
+void* lancaBot(void* args){
     pid_t pid = fork();
 
     if (pid == -1) {
@@ -193,8 +193,24 @@ void recebeCredenciais(){
     close(fd);
 }
 
-int main(){
+int main() {
+    // Cria a thread
+    if (pthread_create(&thread[0], NULL, lancaBot, NULL) != 0) {
+        perror("pthread_create");
+        exit(EXIT_FAILURE);
+    }
+
+    // Realiza outras operações enquanto a thread lancaBot está em execução
     enviaLabirinto();
     recebeCredenciais();
-    lancaBot();
+
+    // Aguarda a conclusão da thread lancaBot
+    if (pthread_join(thread[0], NULL) != 0) {
+        perror("pthread_join");
+        exit(EXIT_FAILURE);
+    }
+
+    // Resto do código do programa...
+
+    return 0;
 }
