@@ -187,7 +187,7 @@ void recebeCredenciais(){
 
     for (int i = 0; i < TAM_CLIENTES; i++)
     {
-        printf("player %d %s %d", i, players->name, players->pid);
+        printf("player %d %s %d\n", i, (players)[i].name, (players)[i].pid);
     }
     
     close(fd);

@@ -20,8 +20,6 @@ int is_Fim(int x, int y, const char grid[MAX_LINHAS][MAX_COLUNAS]) {
 
 void recebecoordenates(int playerX, int playerY, char username[TAM_NOME]) {
     int fd;
-
-    enviaCredenciais(username);
     char playerSymbol = username[0];
 
     fd = open(pipeMotor, O_RDONLY);
@@ -58,6 +56,8 @@ void recebecoordenates(int playerX, int playerY, char username[TAM_NOME]) {
             }
         }
     }
+
+    enviaCredenciais(username);
 
     refresh(); // Atualiza a tela
 
@@ -121,7 +121,7 @@ void recebecoordenates(int playerX, int playerY, char username[TAM_NOME]) {
 
 void enviaCredenciais(char nome[TAM_NOME]){
     int fd;
-    mkfifo(pipeJogoUI, 0666);
+    mkfifo(pipeJogoUI, 0644);
 
     fd = open(pipeJogoUI, O_WRONLY);
 
