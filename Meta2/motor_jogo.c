@@ -210,7 +210,7 @@ int main() {
         exit(EXIT_FAILURE);
     }
 
-    return 0;
     unlink(pipeMotor);
     unlink(pipeJogoUI);
+    return 0;
 }
