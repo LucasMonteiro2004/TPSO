@@ -210,7 +210,7 @@ int main() {
         exit(EXIT_FAILURE);
     }
 
-    // Resto do código do programa...
-
     return 0;
+    unlink(pipeMotor);
+    unlink(pipeJogoUI);
 }

@@ -125,10 +125,10 @@ void enviaCredenciais(char nome[TAM_NOME]){
 
     fd = open(pipeJogoUI, O_WRONLY);
 
-    strcpy(p.name, nome);
+    strncpy(p.name, nome, TAM_NOME);
     p.pid = getpid();
 
-    write(fd, &p, sizeof(Player));
+    write(fd, &p, sizeof(p));
 
     close(fd);
 }
