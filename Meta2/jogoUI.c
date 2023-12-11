@@ -45,6 +45,8 @@ void recebecoordenates(int playerX, int playerY, char username[TAM_NOME]) {
     noecho(); // desativa a exibição automática dos caracteres digitados pelo usuário.
     curs_set(0); // Oculta o cursor
 
+    enviaCredenciais(username);
+
     int x, y;
     for (y = 0; y < MAX_LINHAS; y++) {
         for (x = 0; x < MAX_COLUNAS; x++) {
@@ -56,8 +58,6 @@ void recebecoordenates(int playerX, int playerY, char username[TAM_NOME]) {
             }
         }
     }
-
-    enviaCredenciais(username);
 
     refresh(); // Atualiza a tela
 
@@ -137,5 +137,5 @@ int main(int argc, char *argv[]){
     if(argc != 2){
         printf("Em falta [NOME]");
     }
-    recebecoordenates( 1, 1, user);
+    recebecoordenates( 1, 1, argv[1]);
 }
