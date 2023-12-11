@@ -62,54 +62,53 @@ void recebecoordenates(int playerX, int playerY, char username[TAM_NOME]) {
     refresh(); // Atualiza a tela
 
     while (1) {
+        // Adiciona a segunda área
+        mvprintw(MAX_LINHAS + 1, 0,"Pressione ' ' para entrar no terminal de comandos e Enter para sair\n");
         int ch = getch();
-        if (ch == 'q' || ch == 'Q') {
-            break;
-        }
 
-        int new_x = playerX;
-        int new_y = playerY;
+        if((ch = getch()) == ' '){
+            while ((ch = getch()) != 10) { // 10 é o código ASCII para Enter
+                noraw(); // inverso do raw
+                echo(); // inverso de noecho
+                curs_set(1); // ativa a exibição do cursor
+                if (ch == ' ') {
+                    char comando[TAM_NOME];
+                    mvprintw(MAX_LINHAS + 2, 0,"Você entrou!\n");
+                    mvprintw(MAX_LINHAS + 3, 0,"Comando >> ");
+                    getstr(comando);
+                }
+            }
+        }else{
+            if (ch == 'q' || ch == 'Q') {
+                break;
+            }
 
-        if (ch == KEY_RIGHT) {
-            new_x++;
-        } else if (ch == KEY_LEFT) {
-            new_x--;
-        } else if (ch == KEY_UP) {
-            new_y--;
-        } else if (ch == KEY_DOWN) {
-            new_y++;
-        }
+            int new_x = playerX;
+            int new_y = playerY;
 
-        if (!is_obstacle(new_x, new_y, lab.coordenates)) {
-            mvaddch(playerY, playerX, ' '); // Apaga a posição anterior do jogador
-            playerX = new_x;
-            playerY = new_y;
-            mvaddch(playerY, playerX, playerSymbol); // Desenha o jogador na nova posição
-            refresh();
-        }
+            if (ch == KEY_RIGHT) {
+                new_x++;
+            } else if (ch == KEY_LEFT) {
+                new_x--;
+            } else if (ch == KEY_UP) {
+                new_y--;
+            } else if (ch == KEY_DOWN) {
+                new_y++;
+            }
 
-        if (is_Fim(playerX, playerY, lab.coordenates)) {
-            mvprintw(7, 50, "Parabens! O jogador chegou ao fim!!!");
-            refresh();
-            break;
-        }
-    }
+            if (!is_obstacle(new_x, new_y, lab.coordenates)) {
+                mvaddch(playerY, playerX, ' '); // Apaga a posição anterior do jogador
+                playerX = new_x;
+                playerY = new_y;
+                mvaddch(playerY, playerX, playerSymbol); // Desenha o jogador na nova posição
+                refresh();
+            }
 
-    getch();
-
-    // Adiciona a segunda área
-    mvprintw(MAX_LINHAS + 1, 0,"Pressione ' ' para entrar no terminal de comandos e Enter para sair\n");
-
-    int ch;
-    while ((ch = getch()) != 10) { // 10 é o código ASCII para Enter
-        noraw(); // inverso do raw
-        echo(); // inverso de noecho
-        curs_set(1); // ativa a exibição do cursor
-        if (ch == ' ') {
-            char comando[TAM_NOME];
-            printw("Você entrou!\n");
-            printw("Comando >> ");
-            getstr(comando);
+            if (is_Fim(playerX, playerY, lab.coordenates)) {
+                mvprintw(7, 50, "Parabens! O jogador %s chegou ao fim!!!", username);
+                refresh();
+                break;
+            }
         }
     }
 
