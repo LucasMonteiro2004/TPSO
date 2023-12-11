@@ -125,7 +125,7 @@ void enviaCredenciais(char nome[TAM_NOME]){
 
     fd = open(pipeJogoUI, O_WRONLY);
 
-    strncpy(p.name, nome, TAM_NOME);
+    strcpy(p.name, nome);
     p.pid = getpid();
 
     write(fd, &p, sizeof(p));
