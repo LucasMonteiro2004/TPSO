@@ -60,68 +60,73 @@ void recebeCoordenadas(int playerX, int playerY, char username[TAM_NOME]) {
 
     refresh(); // Atualiza a tela
 
-    int ch;
+    while (1){
 
-    while ((ch = getch()) != ' ') {
-        if (ch == 'q' || ch == 'Q') {
-            break;
-        }
+        initscr(); // Inicializa NCurses
+        raw(); // entrada de caracteres é passada para o programa imediatamente, sem a necessidade de pressionar Enter
+        keypad(stdscr, TRUE);
+        noecho(); // desativa a exibição automática dos caracteres digitados pelo usuário.
+        curs_set(0); // Oculta o cursor
+    
+        int ch;
 
-        int new_x = playerX;
-        int new_y = playerY;
-
-        if (ch == KEY_RIGHT) {
-            new_x++;
-        } else if (ch == KEY_LEFT) {
-            new_x--;
-        } else if (ch == KEY_UP) {
-            new_y--;
-        } else if (ch == KEY_DOWN) {
-            new_y++;
-        }
-
-        if (!is_obstacle(new_x, new_y, lab.coordenates)) {
-            mvaddch(playerY, playerX, ' '); // Apaga a posição anterior do jogador
-            playerX = new_x;
-            playerY = new_y;
-            mvaddch(playerY, playerX, playerSymbol); // Desenha o jogador na nova posição
-            refresh();
-        }
-
-        if (is_Fim(playerX, playerY, lab.coordenates)) {
-            mvprintw(7, 50, "Parabens! O jogador %s chegou ao fim!!!", username);
-            refresh();
-            break;
-        }
-    }
-
-    // Entrar no terminal de comandos
-    noraw(); // inverso do raw
-    echo(); // inverso de noecho
-    curs_set(1); // ativa a exibição do cursor
-
-    mvprintw(MAX_LINHAS + 1, 0, "Pressione ' ' para entrar no terminal de comandos e Enter para sair\n");
-    int comando_ch = getch();
-
-    if (comando_ch == ' ') {
-        char comando[TAM_NOME];
-        mvprintw(MAX_LINHAS + 2, 0, "Você entrou!\n");
-        mvprintw(MAX_LINHAS + 3, 0, "Comando >> ");
-        getstr(comando);
-
-        // Lógica para processar o comando
-        // ...
-
-        mvprintw(MAX_LINHAS + 4, 0, "Pressione Enter para retornar ao labirinto");
-        refresh();
-        while ((comando_ch = getch()) != '\n') {
-            if (comando_ch == 'q' || comando_ch == 'Q') {
+        while ((ch = getch()) != ' ') {
+            if (ch == 'q' || ch == 'Q') {
                 break;
+            }
+
+            int new_x = playerX;
+            int new_y = playerY;
+
+            if (ch == KEY_RIGHT) {
+                new_x++;
+            } else if (ch == KEY_LEFT) {
+                new_x--;
+            } else if (ch == KEY_UP) {
+                new_y--;
+            } else if (ch == KEY_DOWN) {
+                new_y++;
+            }
+
+            if (!is_obstacle(new_x, new_y, lab.coordenates)) {
+                mvaddch(playerY, playerX, ' '); // Apaga a posição anterior do jogador
+                playerX = new_x;
+                playerY = new_y;
+                mvaddch(playerY, playerX, playerSymbol); // Desenha o jogador na nova posição
+                refresh();
+            }
+
+            if (is_Fim(playerX, playerY, lab.coordenates)) {
+                mvprintw(7, 50, "Parabens! O jogador %s chegou ao fim!!!", username);
+                refresh();
+                break;
+            }
+        }
+
+        // Entrar no terminal de comandos
+        noraw(); // inverso do raw
+        echo(); // inverso de noecho
+        curs_set(1); // ativa a exibição do cursor
+
+        mvprintw(MAX_LINHAS + 1, 0, "Pressione ' ' para entrar no terminal de comandos e Enter para sair\n");
+        int comando_ch = getch();
+
+        if (comando_ch == ' ') {
+            char comando[TAM_NOME];
+            mvprintw(MAX_LINHAS + 2, 0, "Você entrou!\n");
+            mvprintw(MAX_LINHAS + 3, 0, "Comando >> ");
+            getstr(comando);
+
+            mvprintw(MAX_LINHAS + 4, 0, "Pressione Enter para retornar ao labirinto");
+            refresh();
+            while ((comando_ch = getch()) != '\n') {
+                if (comando_ch == 'q' || comando_ch == 'Q') {
+                    break;
+                }
             }
         }
     }
 
-    // Finaliza o modo ncurses
     endwin();
 
     close(fd);
