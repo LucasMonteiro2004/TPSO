@@ -18,7 +18,7 @@ int is_Fim(int x, int y, const char grid[MAX_LINHAS][MAX_COLUNAS]) {
     return grid[y][x] == 'F';
 }
 
-void recebecoordenates(int playerX, int playerY, char username[TAM_NOME]) {
+void recebeCoordenadas(int playerX, int playerY, char username[TAM_NOME]) {
     int fd;
     char playerSymbol = username[0];
 
@@ -50,10 +50,9 @@ void recebecoordenates(int playerX, int playerY, char username[TAM_NOME]) {
     int x, y;
     for (y = 0; y < MAX_LINHAS; y++) {
         for (x = 0; x < MAX_COLUNAS; x++) {
-            if (lab.coordenates[y][x] != 'F')
-            {
+            if (lab.coordenates[y][x] != 'F') {
                 printw("%c", lab.coordenates[y][x]);
-            }else{
+            } else {
                 printw(" ");
             }
         }
@@ -61,52 +60,62 @@ void recebecoordenates(int playerX, int playerY, char username[TAM_NOME]) {
 
     refresh(); // Atualiza a tela
 
-    while (1) {
-        // Adiciona a segunda área
-        mvprintw(MAX_LINHAS + 1, 0,"Pressione ' ' para entrar no terminal de comandos e Enter para sair\n");
-        int ch = getch();
+    int ch;
 
-        if((ch = getch()) == ' '){
-            while ((ch = getch()) != 10) { // 10 é o código ASCII para Enter
-                noraw(); // inverso do raw
-                echo(); // inverso de noecho
-                curs_set(1); // ativa a exibição do cursor
-                if (ch == ' ') {
-                    char comando[TAM_NOME];
-                    mvprintw(MAX_LINHAS + 2, 0,"Você entrou!\n");
-                    mvprintw(MAX_LINHAS + 3, 0,"Comando >> ");
-                    getstr(comando);
-                }
-            }
-        }else{
-            if (ch == 'q' || ch == 'Q') {
-                break;
-            }
+    while ((ch = getch()) != ' ') {
+        if (ch == 'q' || ch == 'Q') {
+            break;
+        }
 
-            int new_x = playerX;
-            int new_y = playerY;
+        int new_x = playerX;
+        int new_y = playerY;
 
-            if (ch == KEY_RIGHT) {
-                new_x++;
-            } else if (ch == KEY_LEFT) {
-                new_x--;
-            } else if (ch == KEY_UP) {
-                new_y--;
-            } else if (ch == KEY_DOWN) {
-                new_y++;
-            }
+        if (ch == KEY_RIGHT) {
+            new_x++;
+        } else if (ch == KEY_LEFT) {
+            new_x--;
+        } else if (ch == KEY_UP) {
+            new_y--;
+        } else if (ch == KEY_DOWN) {
+            new_y++;
+        }
 
-            if (!is_obstacle(new_x, new_y, lab.coordenates)) {
-                mvaddch(playerY, playerX, ' '); // Apaga a posição anterior do jogador
-                playerX = new_x;
-                playerY = new_y;
-                mvaddch(playerY, playerX, playerSymbol); // Desenha o jogador na nova posição
-                refresh();
-            }
+        if (!is_obstacle(new_x, new_y, lab.coordenates)) {
+            mvaddch(playerY, playerX, ' '); // Apaga a posição anterior do jogador
+            playerX = new_x;
+            playerY = new_y;
+            mvaddch(playerY, playerX, playerSymbol); // Desenha o jogador na nova posição
+            refresh();
+        }
 
-            if (is_Fim(playerX, playerY, lab.coordenates)) {
-                mvprintw(7, 50, "Parabens! O jogador %s chegou ao fim!!!", username);
-                refresh();
+        if (is_Fim(playerX, playerY, lab.coordenates)) {
+            mvprintw(7, 50, "Parabens! O jogador %s chegou ao fim!!!", username);
+            refresh();
+            break;
+        }
+    }
+
+    // Entrar no terminal de comandos
+    noraw(); // inverso do raw
+    echo(); // inverso de noecho
+    curs_set(1); // ativa a exibição do cursor
+
+    mvprintw(MAX_LINHAS + 1, 0, "Pressione ' ' para entrar no terminal de comandos e Enter para sair\n");
+    int comando_ch = getch();
+
+    if (comando_ch == ' ') {
+        char comando[TAM_NOME];
+        mvprintw(MAX_LINHAS + 2, 0, "Você entrou!\n");
+        mvprintw(MAX_LINHAS + 3, 0, "Comando >> ");
+        getstr(comando);
+
+        // Lógica para processar o comando
+        // ...
+
+        mvprintw(MAX_LINHAS + 4, 0, "Pressione Enter para retornar ao labirinto");
+        refresh();
+        while ((comando_ch = getch()) != '\n') {
+            if (comando_ch == 'q' || comando_ch == 'Q') {
                 break;
             }
         }
@@ -117,6 +126,7 @@ void recebecoordenates(int playerX, int playerY, char username[TAM_NOME]) {
 
     close(fd);
 }
+
 
 void enviaCredenciais(char nome[TAM_NOME]){
     int fd;
@@ -136,5 +146,5 @@ int main(int argc, char *argv[]){
     if(argc != 2){
         printf("Em falta [NOME]");
     }
-    recebecoordenates( 1, 1, argv[1]);
+    recebeCoordenadas( 1, 1, argv[1]);
 }
