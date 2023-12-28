@@ -29,7 +29,9 @@ void enviaLabirinto() {
 }
 
 void extractBotData(const char *str, Bot *bot) {
-    sscanf(str, "%d %d %d", &bot->x, &bot->y, &bot->duration);
+    if (sscanf(str, "%d %d %d", &bot->x, &bot->y, &bot->duration) != 3) {
+        fprintf(stderr, "Falha ao extrair dados do Bot: formato incorreto.\n");
+    }
 }
 
 void* lancaBot(void* args) {
@@ -50,24 +52,28 @@ void* lancaBot(void* args) {
     } else if (pid > 0) {
         // Processo pai
         close(pipefd[1]);  // Fecha a extremidade de escrita do pipe
-        read(pipefd[0], buffer, sizeof(buffer));
+        ssize_t num_read = read(pipefd[0], buffer, sizeof(buffer));
         close(pipefd[0]);
 
-        Bot bot;
-        extractBotData(buffer, &bot);
+        if (num_read > 0) {
+            Bot bot;
+            extractBotData(buffer, &bot);
 
-        // Exibindo os valores da estrutura
-        printf("Bot x: %d\n", bot.x);
-        printf("Bot y: %d\n", bot.y);
-        printf("Bot duration: %d\n", bot.duration);
+            // Exibindo os valores da estrutura
+            printf("Bot x: %d\n", bot.x);
+            printf("Bot y: %d\n", bot.y);
+            printf("Bot duration: %d\n", bot.duration);
+        } else {
+            fprintf(stderr, "Falha ao ler do pipe.\n");
+        }
     } else {
         // Processo filho
         close(pipefd[0]);  // Fecha a extremidade de leitura do pipe
         dup(pipefd[1]);    // Redireciona a saída padrão para o pipe
         close(pipefd[1]);
 
-        // Substitua abaixo pela chamada ao seu programa
-        execlp("./bot", "./bot", (char *)NULL);
+        // Substitua abaixo pela chamada ao seu programa com os argumentos apropriados
+        execlp("./bot", "./bot", "2", "3", (char *)NULL);
 
         perror("execlp");
         exit(EXIT_FAILURE);
