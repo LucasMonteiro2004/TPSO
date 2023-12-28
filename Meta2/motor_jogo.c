@@ -28,39 +28,53 @@ void enviaLabirinto() {
     fclose(file);
 }
 
-void* lancaBot(void* args){
-    pid_t pid = fork();
+void extractBotData(const char *str, Bot *bot) {
+    sscanf(str, "%d %d %d", &bot->x, &bot->y, &bot->duration);
+}
+
+void* lancaBot(void* args) {
+    int pipefd[2];
+    pid_t pid;
+    char buffer[1024];
+
+    if (pipe(pipefd) == -1) {
+        perror("pipe");
+        exit(EXIT_FAILURE);
+    }
+
+    pid = fork();
 
     if (pid == -1) {
-        // Ocorreu um erro ao criar o processo
         perror("fork");
         exit(EXIT_FAILURE);
     } else if (pid > 0) {
         // Processo pai
-        printf("Processo pai: Esperando pelo término do processo filho...\n");
+        close(pipefd[1]);  // Fecha a extremidade de escrita do pipe
+        read(pipefd[0], buffer, sizeof(buffer));
+        close(pipefd[0]);
 
-        // Aguarda o término do processo filho
-        waitpid(pid, NULL, 0);
+        Bot bot;
+        extractBotData(buffer, &bot);
 
-        printf("Processo pai: Processo filho terminou.\n");
+        // Exibindo os valores da estrutura
+        printf("Bot x: %d\n", bot.x);
+        printf("Bot y: %d\n", bot.y);
+        printf("Bot duration: %d\n", bot.duration);
     } else {
         // Processo filho
-        printf("Processo filho: Executando o programa filho...\n");
+        close(pipefd[0]);  // Fecha a extremidade de leitura do pipe
+        dup(pipefd[1]);    // Redireciona a saída padrão para o pipe
+        close(pipefd[1]);
 
-        // Redireciona a saída padrão para um arquivo
-        int novo_descritor = creat("saida.txt", 0644);
-        dup(novo_descritor);
-        close(novo_descritor);
+        // Substitua abaixo pela chamada ao seu programa
+        execlp("./bot", "./bot", (char *)NULL);
 
-        // Substitua "seu_programa" pelo nome do programa que deseja executar
-        execlp("./bot", "./bot", "2", "3", (char *)NULL);
-
-        // Se o execlp() falhar, exibe uma mensagem de erro
         perror("execlp");
         exit(EXIT_FAILURE);
     }
-}
 
+    return NULL;
+}
 
 // Função para validar o comando "users"
 int validateUsersCommand(const char *command) {
