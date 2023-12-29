@@ -33,6 +33,40 @@ void extractBotData(const char *str, Bot *bot) {
         fprintf(stderr, "Falha ao extrair dados do Bot: formato incorreto.\n");
     }
 }
+void passaTabela(int tab[MAX_LINHAS][MAX_COLUNAS])
+{
+    for(int i=0;i<MAX_LINHAS;i++)
+    {
+        for(int j=0;j<MAX_COLUNAS;j++)
+        {
+            if(tab[i][j]>0)
+                lab[i][j]='X';
+        }
+    }
+}
+void adicionarValor(Bot info) {
+    static int tabBot[MAX_LINHAS][MAX_COLUNAS] = {{0}};
+
+    // Adicionar o valor à tabela
+    tabBot[info.linha][info.coluna] = info.duracao;
+
+    // Imprimir a tabela
+    for (int i = 0; i < MAX_LINHAS; ++i) {
+        for (int j = 0; j < MAX_COLUNAS; ++j) {
+            if (i == info.linha && j == info.coluna) {
+                printf("%d\t",info.duracao);
+                tabBot[i][j]--;
+            } else {
+                printf("%d\t", tabBot[i][j]);
+                if(tabBot[i][j]>0)
+                --tabBot[i][j];
+            }
+        }
+        printf("\n");
+    }
+    passaTabela(tabBot);
+}
+
 
 void* lancaBot(void* args) {
     int pipefd[2];
@@ -58,7 +92,8 @@ void* lancaBot(void* args) {
         if (num_read > 0) {
             Bot bot;
             extractBotData(buffer, &bot);
-
+            //adicionarValor(bot);
+            
             // Exibindo os valores da estrutura
             printf("Bot x: %d\n", bot.x);
             printf("Bot y: %d\n", bot.y);
