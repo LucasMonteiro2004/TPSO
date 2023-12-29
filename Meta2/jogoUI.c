@@ -103,28 +103,30 @@ void recebeCoordenadas(int playerX, int playerY, char username[TAM_NOME]) {
             }
         }
 
-        // Entrar no terminal de comandos
-        noraw(); // inverso do raw
-        echo(); // inverso de noecho
-        curs_set(1); // ativa a exibição do cursor
+        while ((ch = getch()) != 10){
+            noraw(); // inverso do raw
+            echo(); // inverso de noecho
+            curs_set(1); // ativa a exibição do cursor
 
-        mvprintw(MAX_LINHAS + 1, 0, "Pressione ' ' para entrar no terminal de comandos e Enter para sair\n");
-        int comando_ch = getch();
+            mvprintw(MAX_LINHAS + 1, 0, "Pressione ' ' para entrar no terminal de comandos e Enter para sair\n");
+            int comando_ch = getch();
 
-        if (comando_ch == ' ') {
-            char comando[TAM_NOME];
-            mvprintw(MAX_LINHAS + 2, 0, "Você entrou!\n");
-            mvprintw(MAX_LINHAS + 3, 0, "Comando >> ");
-            getstr(comando);
+            if (comando_ch == ' ') {
+                char comando[TAM_NOME];
+                mvprintw(MAX_LINHAS + 2, 0, "Voce entrou!\n");
+                mvprintw(MAX_LINHAS + 3, 0, "Comando >> ");
+                getstr(comando);
 
-            mvprintw(MAX_LINHAS + 4, 0, "Pressione Enter para retornar ao labirinto");
-            refresh();
-            while ((comando_ch = getch()) != '\n') {
-                if (comando_ch == 'q' || comando_ch == 'Q') {
-                    break;
+                mvprintw(MAX_LINHAS + 4, 0, "Pressione Enter para retornar ao labirinto");
+                refresh();
+                while ((comando_ch = getch()) != '\n') {
+                    if (comando_ch == 'q' || comando_ch == 'Q') {
+                        break;
+                    }
                 }
             }
         }
+        return;
     }
 
     endwin();
@@ -152,4 +154,5 @@ int main(int argc, char *argv[]){
         printf("Em falta [NOME]");
     }
     recebeCoordenadas( 1, 1, argv[1]);
+    return 0;
 }
