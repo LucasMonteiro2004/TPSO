@@ -3,6 +3,8 @@
 pthread_t thread[2];
 Coordenadas lab;
 Player players[TAM_CLIENTES];
+pthread_mutex_t players_mutex = PTHREAD_MUTEX_INITIALIZER; // Mutex para proteger o acesso dos players
+int activePlayers = 0;
 
 void enviaLabirinto() {
     int fd;
@@ -217,53 +219,74 @@ int validaComandos(char *command){
 
 }
 
-void recebeCredenciais(){
-    int fd;
+void* recebeCredenciais(void* args) {
+    while (1) {
+        int fd = open(pipeJogoUI, O_RDONLY);
 
-    fd = open(pipeJogoUI, O_RDONLY);
+        // Leitura dos dados do pipe
+        Player receivedPlayer;
+        read(fd, &receivedPlayer, sizeof(Player));
 
-    // Leitura dos dados do pipe
-    Player receivedPlayer;
-    read(fd, &receivedPlayer, sizeof(Player));
+        // Encontrar a próxima posição vazia no array
+        int index = 0;
+        pthread_mutex_lock(&players_mutex); // Lock mutex before accessing players array
+        while (index < TAM_CLIENTES && players[index].pid != 0) {
+            index++;
+            activePlayers++;
+        }
 
-    // Encontrar a próxima posição vazia no array
-    int index = 0;
-    while (index < TAM_CLIENTES && players[index].pid != 0) {
-        index++;
+        // Se encontrou uma posição vazia, coloca os dados no array
+        if (index < TAM_CLIENTES) {
+            players[index] = receivedPlayer;
+        } else {
+            // Tratar o caso em que o array está cheio
+            printf("Erro: O array de players está cheio.\n");
+        }
+
+        // Print the complete array of users
+        printf("Lista de Utilizadores:\n");
+        for (int i = 0; i < TAM_CLIENTES; i++) {
+            printf("player %d %s %d\n", i, players[i].name, players[i].pid);
+        }
+
+        pthread_mutex_unlock(&players_mutex); // Unlock mutex after accessing players array
+
+        close(fd);
     }
-
-    // Se encontrou uma posição vazia, coloca os dados no array
-    if (index < TAM_CLIENTES) {
-        players[index] = receivedPlayer;
-    } else {
-        // Tratar o caso em que o array está cheio
-        printf("Erro: O array de players está cheio.\n");
-    }
-
-    for (int i = 0; i < TAM_CLIENTES; i++)
-    {
-        printf("player %d %s %d\n", i, (players)[i].name, (players)[i].pid);
-    }
-    
-    close(fd);
+    return NULL;
 }
 
+
 int main() {
-    // Cria a thread
+    // Cria as threads
     if (pthread_create(&thread[0], NULL, lancaBot, NULL) != 0) {
         perror("pthread_create");
         exit(EXIT_FAILURE);
     }
 
-    // Realiza outras operações enquanto a thread lancaBot está em execução
-    while (1)
-    {
-        enviaLabirinto();
-        recebeCredenciais();
+    if (pthread_create(&thread[1], NULL, recebeCredenciais, NULL) != 0) {
+        perror("pthread_create");
+        exit(EXIT_FAILURE);
     }
 
-    // Aguarda a conclusão da thread lancaBot
+    // Realiza outras operações enquanto as threads estão em execução
+    while (1) {
+        enviaLabirinto();
+
+        pthread_mutex_lock(&players_mutex); 
+        if (activePlayers == 0) {
+            pthread_mutex_unlock(&players_mutex); 
+            break;
+        }
+        pthread_mutex_unlock(&players_mutex); 
+    }
+
     if (pthread_join(thread[0], NULL) != 0) {
+        perror("pthread_join");
+        exit(EXIT_FAILURE);
+    }
+
+    if (pthread_join(thread[1], NULL) != 0) {
         perror("pthread_join");
         exit(EXIT_FAILURE);
     }
