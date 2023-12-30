@@ -59,6 +59,7 @@ char name[TAM_NOME];
 int pid;
 int x;
 int y;
+char pipeJogador[MAX_COMMAND_LENGTH];
 }Player;
 
 typedef struct {
@@ -80,4 +81,4 @@ void recebecoordenates(int playerX, int playerY, char username[TAM_NOME]);
 void enviaCredenciais(char nome[TAM_NOME]);
 void* lancaBot(void* args);
 void enviaCoordenadas(int playerX, int playerY, char playerSymbol);
-PlayerCopy recebeCoodenadas();
+void recebe_Coodenadas_Players();

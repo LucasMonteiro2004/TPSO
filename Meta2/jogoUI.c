@@ -88,6 +88,7 @@ void recebeCoordenadas(int playerX, int playerY, char username[TAM_NOME]) {
             }
 
             if (!is_obstacle(new_x, new_y, lab.coordenates)) {
+                //enviaCoordenadas(new_x, new_y, playerSymbol);
                 mvaddch(playerY, playerX, ' '); // Apaga a posição anterior do jogador
                 playerX = new_x;
                 playerY = new_y;
@@ -155,6 +156,7 @@ void enviaCredenciais(char nome[TAM_NOME]){
 
     strcpy(p.name, nome);
     p.pid = getpid();
+    sprintf(p.pipeJogador, "cli%d", p.pid);
 
     write(fd, &p, sizeof(p));
 
