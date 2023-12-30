@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <signal.h>
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
@@ -24,6 +25,8 @@ char *arquivo1 = "labirinto2.txt";
 char *arquivo2 = "labirinto3.txt";
 char *pipeMotor = "pipe_motor";
 char *pipeJogoUI = "pipe_ui";
+
+int updateLabirinto = 0;
 
 struct BotMessage {
     char content[MAX_COMMAND_LENGTH];
@@ -73,12 +76,12 @@ typedef struct{
     char Symbol;
 } PlayerCopy;
 
-
+Player players[TAM_CLIENTES];
+Bot b;
 int validaComandos(char *command);
 int is_obstacle(int x, int y, const char grid[MAX_LINHAS][MAX_COLUNAS]);
 int is_Fim(int x, int y, const char grid[MAX_LINHAS][MAX_COLUNAS]);
 void recebecoordenates(int playerX, int playerY, char username[TAM_NOME]);
 void enviaCredenciais(char nome[TAM_NOME]);
 void* lancaBot(void* args);
-void enviaCoordenadas(int playerX, int playerY, char playerSymbol);
-void recebe_Coodenadas_Players();
+void obterCoordenadasJogadores(Player players[TAM_CLIENTES]);

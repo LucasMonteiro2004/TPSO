@@ -2,8 +2,8 @@
 
 pthread_t thread[2];
 Coordenadas lab;
-Player players[TAM_CLIENTES];
 pthread_mutex_t players_mutex = PTHREAD_MUTEX_INITIALIZER; // Mutex para proteger o acesso dos players
+pthread_mutex_t labMutex = PTHREAD_MUTEX_INITIALIZER;  // Mutex para proteger o acesso ao labirinto
 int activePlayers = 0;
 
 void enviaLabirinto() {
@@ -122,12 +122,10 @@ void* lancaBot(void* args) {
         if (num_read > 0) {
             Bot bot;
             extractBotData(buffer, &bot);
-            adicionarValor(bot);
-            
-            // Exibindo os valores da estrutura
-            printf("Bot x: %d\n", bot.x);
-            printf("Bot y: %d\n", bot.y);
-            printf("Bot duration: %d\n", bot.duration);
+
+            b.x = bot.x;
+            b.y = bot.y;
+            b.duration = bot.duration;
         } else {
             fprintf(stderr, "Falha ao ler do pipe.\n");
         }
@@ -138,7 +136,7 @@ void* lancaBot(void* args) {
         close(pipefd[1]);
 
         // Substitua abaixo pela chamada ao seu programa com os argumentos apropriados
-        execlp("./bot", "./bot", "2", "3", (char *)NULL);
+        execlp("./bot", "./bot", "5", "5", (char *)NULL);
 
         perror("execlp");
         exit(EXIT_FAILURE);
@@ -257,27 +255,44 @@ void* recebeCredenciais(void* args) {
         Player receivedPlayer;
         read(fd, &receivedPlayer, sizeof(Player));
 
-        // Encontrar a próxima posição vazia no array
-        int index = 0;
         pthread_mutex_lock(&players_mutex); // Lock mutex before accessing players array
-        while (index < TAM_CLIENTES && players[index].pid != 0) {
-            index++;
-        }
-
-        // Se encontrou uma posição vazia, coloca os dados no array
-        if (index < TAM_CLIENTES) {
-            players[index] = receivedPlayer;
-            activePlayers++;  // Incrementa apenas se um jogador foi adicionado
-        } else {
-            // Tratar o caso em que o array está cheio
-            printf("Aviso: O array de jogadores esta cheio.\n");
-            break;  // Interrompe a leitura de novos jogadores
-        }
-
-        // Print the complete array of users
-        printf("Lista de Utilizadores:\n");
+        
+        // Verificar se o jogador já está na lista
+        int playerExists = 0;
         for (int i = 0; i < TAM_CLIENTES; i++) {
-            printf("player %d %s %d\n", i, players[i].name, players[i].pid);
+            if (players[i].pid != 0 && strcmp(players[i].name, receivedPlayer.name) == 0) {
+                playerExists = 1;
+                break;
+            }
+        }
+
+        // Se não existe, encontrar a próxima posição vazia no array
+        if (!playerExists) {
+            int index = 0;
+            while (index < TAM_CLIENTES && players[index].pid != 0) {
+                index++;
+            }
+
+            // Se encontrou uma posição vazia, coloca os dados no array
+            if (index < TAM_CLIENTES) {
+                players[index] = receivedPlayer;
+                activePlayers++;  // Incrementa apenas se um jogador foi adicionado
+            } else {
+                // Tratar o caso em que o array está cheio
+                printf("Aviso: O array de jogadores esta cheio.\n");
+                break;  // Interrompe a leitura de novos jogadores
+            }
+
+            // Print the complete array of users
+            printf("Lista de Utilizadores:\n");
+            for (int i = 0; i < TAM_CLIENTES; i++) {
+                if (players[i].pid != 0) {
+                    printf("player %d %s %d\n", i, players[i].name, players[i].pid);
+                }
+            }
+        } else {
+            // Se o jogador já existe, não faz nada
+            printf("Aviso: Jogador com o nome '%s' ja existe.\n", receivedPlayer.name);
         }
 
         pthread_mutex_unlock(&players_mutex); // Unlock mutex after accessing players array
@@ -300,18 +315,12 @@ int main() {
         exit(EXIT_FAILURE);
     }
 
-    // Realiza outras operações enquanto as threads estão em execução
-    while (1) {
+    while (1){
         enviaLabirinto();
-
-        pthread_mutex_lock(&players_mutex); 
-        if (activePlayers == TAM_CLIENTES) {
-            pthread_mutex_unlock(&players_mutex); 
-            break;
-        }
-        pthread_mutex_unlock(&players_mutex); 
     }
+    
 
+    // Aguarda o término das threads
     if (pthread_join(thread[0], NULL) != 0) {
         perror("pthread_join");
         exit(EXIT_FAILURE);
@@ -322,8 +331,5 @@ int main() {
         exit(EXIT_FAILURE);
     }
 
-    unlink(pipeMotor);
-    unlink(pipeJogoUI);
-    
     return 0;
 }
