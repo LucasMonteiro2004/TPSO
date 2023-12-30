@@ -248,8 +248,10 @@ int validaComandos(char *command){
 }
 
 void* recebeCredenciais(void* args) {
+    int fd;
+    
     while (1) {
-        int fd = open(pipeJogoUI, O_RDONLY);
+        fd = open(pipeJogoUI, O_RDONLY);
 
         // Leitura dos dados do pipe
         Player receivedPlayer;
@@ -268,7 +270,8 @@ void* recebeCredenciais(void* args) {
             activePlayers++;  // Incrementa apenas se um jogador foi adicionado
         } else {
             // Tratar o caso em que o array está cheio
-            printf("Erro: O array de players está cheio.\n");
+            printf("Aviso: O array de jogadores esta cheio.\n");
+            break;  // Interrompe a leitura de novos jogadores
         }
 
         // Print the complete array of users
@@ -281,6 +284,7 @@ void* recebeCredenciais(void* args) {
 
         close(fd);
     }
+    
     return NULL;
 }
 
@@ -301,7 +305,7 @@ int main() {
         enviaLabirinto();
 
         pthread_mutex_lock(&players_mutex); 
-        if (activePlayers == 0) {
+        if (activePlayers == TAM_CLIENTES) {
             pthread_mutex_unlock(&players_mutex); 
             break;
         }
@@ -320,5 +324,6 @@ int main() {
 
     unlink(pipeMotor);
     unlink(pipeJogoUI);
+    
     return 0;
 }
