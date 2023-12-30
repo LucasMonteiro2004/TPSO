@@ -57,6 +57,8 @@ char cmdOwner[50];
 typedef struct player{
 char name[TAM_NOME];
 int pid;
+int x;
+int y;
 }Player;
 
 typedef struct {
@@ -65,9 +67,17 @@ typedef struct {
     char username[TAM_NOME];
 } MiniTerminalData;
 
+typedef struct{
+    int playerx, playery;
+    char Symbol;
+} PlayerCopy;
+
+
 int validaComandos(char *command);
 int is_obstacle(int x, int y, const char grid[MAX_LINHAS][MAX_COLUNAS]);
 int is_Fim(int x, int y, const char grid[MAX_LINHAS][MAX_COLUNAS]);
 void recebecoordenates(int playerX, int playerY, char username[TAM_NOME]);
 void enviaCredenciais(char nome[TAM_NOME]);
 void* lancaBot(void* args);
+void enviaCoordenadas(int playerX, int playerY, char playerSymbol);
+PlayerCopy recebeCoodenadas();

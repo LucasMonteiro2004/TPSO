@@ -61,16 +61,15 @@ void recebeCoordenadas(int playerX, int playerY, char username[TAM_NOME]) {
     refresh(); // Atualiza a tela
 
     while (1){
-
-        initscr(); // Inicializa NCurses
-        raw(); // entrada de caracteres é passada para o programa imediatamente, sem a necessidade de pressionar Enter
-        keypad(stdscr, TRUE);
-        noecho(); // desativa a exibição automática dos caracteres digitados pelo usuário.
-        curs_set(0); // Oculta o cursor
     
         int ch;
 
         while ((ch = getch()) != ' ') {
+            initscr(); // Inicializa NCurses
+            raw(); // entrada de caracteres é passada para o programa imediatamente, sem a necessidade de pressionar Enter
+            keypad(stdscr, TRUE);
+            noecho(); // desativa a exibição automática dos caracteres digitados pelo usuário.
+            curs_set(0); // Oculta o cursor
             if (ch == 'q' || ch == 'Q') {
                 break;
             }
@@ -113,7 +112,6 @@ void recebeCoordenadas(int playerX, int playerY, char username[TAM_NOME]) {
 
             if (comando_ch == ' ') {
                 char comando[TAM_NOME];
-                mvprintw(MAX_LINHAS + 2, 0, "Voce entrou!\n");
                 mvprintw(MAX_LINHAS + 3, 0, "Comando >> ");
                 getstr(comando);
 
@@ -126,14 +124,28 @@ void recebeCoordenadas(int playerX, int playerY, char username[TAM_NOME]) {
                 }
             }
         }
+        endwin();
         return;
     }
-
-    endwin();
 
     close(fd);
 }
 
+void enviaCoordenadas(int playerX, int playerY, char playerSymbol) {
+    int fd;
+    mkfifo(pipeJogoUI, 0644);
+
+    fd = open(pipeJogoUI, O_WRONLY);
+
+    PlayerCopy playerCopy;
+    playerCopy.playerx = playerX;
+    playerCopy.playery = playerY;
+    playerCopy.Symbol = playerSymbol;
+
+    write(fd, &playerCopy, sizeof(PlayerCopy));
+
+    close(fd);
+}
 
 void enviaCredenciais(char nome[TAM_NOME]){
     int fd;

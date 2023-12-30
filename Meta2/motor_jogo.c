@@ -30,6 +30,31 @@ void enviaLabirinto() {
     fclose(file);
 }
 
+PlayerCopy recebeCoodenadas() {
+    int fd;
+    PlayerCopy playerCopy;
+
+    fd = open(pipeJogoUI, O_RDONLY);
+
+    if (fd == -1) {
+        printf("Erro ao abrir o pipe para leitura!\n");
+        exit(EXIT_FAILURE);
+    }
+
+    int bytesRead = read(fd, &playerCopy, sizeof(PlayerCopy));
+
+    if (bytesRead == -1) {
+        printf("Erro ao ler do pipe!\n");
+        close(fd);
+        exit(EXIT_FAILURE);
+    }
+
+    close(fd);
+
+    return playerCopy;
+}
+
+
 void extractBotData(const char *str, Bot *bot) {
     if (sscanf(str, "%d %d %d", &bot->x, &bot->y, &bot->duration) != 3) {
         fprintf(stderr, "Falha ao extrair dados do Bot: formato incorreto.\n");
@@ -46,29 +71,32 @@ void passaTabela(int tab[MAX_LINHAS][MAX_COLUNAS])
         }
     }
 }
+
 void adicionarValor(Bot info) {
     static int tabBot[MAX_LINHAS][MAX_COLUNAS] = {{0}};
 
     // Adicionar o valor à tabela
     tabBot[info.y][info.x] = info.duration;
 
+    // Atualizar a matriz 'lab.coordenates' com 'X' nas posições ocupadas pelos bots
+    lab.coordenates[info.y][info.x] = 'X';
+
     // Imprimir a tabela
     for (int i = 0; i < MAX_LINHAS; ++i) {
         for (int j = 0; j < MAX_COLUNAS; ++j) {
             if (i == info.y && j == info.x) {
-                printf("%d\t",info.duration);
+                printf("%d\t", info.duration);
                 tabBot[i][j]--;
             } else {
                 printf("%d\t", tabBot[i][j]);
-                if(tabBot[i][j]>0)
-                --tabBot[i][j];
+                if (tabBot[i][j] > 0)
+                    --tabBot[i][j];
             }
         }
         printf("\n");
     }
     passaTabela(tabBot);
 }
-
 
 void* lancaBot(void* args) {
     int pipefd[2];
@@ -94,7 +122,7 @@ void* lancaBot(void* args) {
         if (num_read > 0) {
             Bot bot;
             extractBotData(buffer, &bot);
-            //adicionarValor(bot);
+            adicionarValor(bot);
             
             // Exibindo os valores da estrutura
             printf("Bot x: %d\n", bot.x);
@@ -232,12 +260,12 @@ void* recebeCredenciais(void* args) {
         pthread_mutex_lock(&players_mutex); // Lock mutex before accessing players array
         while (index < TAM_CLIENTES && players[index].pid != 0) {
             index++;
-            activePlayers++;
         }
 
         // Se encontrou uma posição vazia, coloca os dados no array
         if (index < TAM_CLIENTES) {
             players[index] = receivedPlayer;
+            activePlayers++;  // Incrementa apenas se um jogador foi adicionado
         } else {
             // Tratar o caso em que o array está cheio
             printf("Erro: O array de players está cheio.\n");
@@ -255,7 +283,6 @@ void* recebeCredenciais(void* args) {
     }
     return NULL;
 }
-
 
 int main() {
     // Cria as threads
