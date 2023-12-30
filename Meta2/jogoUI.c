@@ -60,7 +60,8 @@ void recebeCoordenadas(int playerX, int playerY, char username[TAM_NOME]) {
 
     refresh(); // Atualiza a tela
 
-    while (1){
+    char comando[TAM_NOME];
+    while (strcmp(comando, "sair") != 0){
     
         int ch;
 
@@ -119,8 +120,7 @@ void recebeCoordenadas(int playerX, int playerY, char username[TAM_NOME]) {
             int comando_ch = getch();
 
             if (comando_ch == ' ') {
-                char comando[TAM_NOME];
-                mvprintw(MAX_LINHAS + 3, 0, "Comando >> ");
+                mvprintw(MAX_LINHAS + 2, 0, "Comando >> ");
                 getstr(comando);
 
                 mvprintw(MAX_LINHAS + 4, 0, "Pressione Enter para retornar ao labirinto");

@@ -30,31 +30,6 @@ void enviaLabirinto() {
     fclose(file);
 }
 
-PlayerCopy recebeCoodenadas() {
-    int fd;
-    PlayerCopy playerCopy;
-
-    fd = open(pipeJogoUI, O_RDONLY);
-
-    if (fd == -1) {
-        printf("Erro ao abrir o pipe para leitura!\n");
-        exit(EXIT_FAILURE);
-    }
-
-    int bytesRead = read(fd, &playerCopy, sizeof(PlayerCopy));
-
-    if (bytesRead == -1) {
-        printf("Erro ao ler do pipe!\n");
-        close(fd);
-        exit(EXIT_FAILURE);
-    }
-
-    close(fd);
-
-    return playerCopy;
-}
-
-
 void extractBotData(const char *str, Bot *bot) {
     if (sscanf(str, "%d %d %d", &bot->x, &bot->y, &bot->duration) != 3) {
         fprintf(stderr, "Falha ao extrair dados do Bot: formato incorreto.\n");
