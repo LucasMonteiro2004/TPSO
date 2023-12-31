@@ -97,10 +97,7 @@ void* lancaBot(void* args) {
         if (num_read > 0) {
             Bot bot;
             extractBotData(buffer, &bot);
-
-            b.x = bot.x;
-            b.y = bot.y;
-            b.duration = bot.duration;
+            adicionarValor(bot);
         } else {
             fprintf(stderr, "Falha ao ler do pipe.\n");
         }
