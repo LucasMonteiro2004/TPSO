@@ -89,14 +89,14 @@ void recebeCoordenadas(int playerX, int playerY, char username[TAM_NOME]) {
             }
 
             if (!is_obstacle(new_x, new_y, lab.coordenates)) {
-                for (int i = 0; i < TAM_CLIENTES; i++)
+                /*for (int i = 0; i < TAM_CLIENTES; i++)
                 {
                     if(players[i].pid == p.pid){
                         players[i].x = new_x;
                         players[i].y = new_y;
                     }
                     mvaddch(players[i].y, players[i].x, players[i].name[0]);
-                }
+                }*/
                 mvaddch(playerY, playerX, ' '); // Apaga a posição anterior do jogador
                 playerX = new_x;
                 playerY = new_y;
@@ -109,6 +109,7 @@ void recebeCoordenadas(int playerX, int playerY, char username[TAM_NOME]) {
                 refresh();
                 break;
             }
+
         }
 
         while ((ch = getch()) != 10){
