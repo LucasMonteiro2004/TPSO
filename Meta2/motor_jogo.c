@@ -97,7 +97,7 @@ void* lancaBot(void* args) {
         if (num_read > 0) {
             Bot bot;
             extractBotData(buffer, &bot);
-            //adicionarValor(bot);
+            adicionarValor(bot);
 
             b = bot;
         } else {
@@ -289,9 +289,9 @@ int main() {
         exit(EXIT_FAILURE);
     }
 
-    while (1){
-        enviaLabirinto();
-    }
+    while (1)
+    {
+        enviaLabirinto();    }
     
 
     // Aguarda o término das threads
