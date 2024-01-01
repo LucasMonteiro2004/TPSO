@@ -2,6 +2,7 @@
 
 pthread_t thread[2];
 Coordenadas lab;
+char comand[50];
 pthread_mutex_t players_mutex = PTHREAD_MUTEX_INITIALIZER; // Mutex para proteger o acesso dos players
 pthread_mutex_t labMutex = PTHREAD_MUTEX_INITIALIZER;  // Mutex para proteger o acesso ao labirinto
 int activePlayers = 0;
@@ -97,8 +98,8 @@ void* lancaBot(void* args) {
         if (num_read > 0) {
             Bot bot;
             extractBotData(buffer, &bot);
-            adicionarValor(bot);
-            
+            //adicionarValor(bot);
+            b = bot;
         } else {
             fprintf(stderr, "Falha ao ler do pipe.\n");
         }
@@ -116,6 +117,14 @@ void* lancaBot(void* args) {
     }
 
     return NULL;
+}
+
+char* recebeComando(){
+    mkfifo(pipeJogoUI, 0644);
+    int fd = open(pipeJogoUI, O_RDONLY);
+    read(fd, comand, sizeof(comand));
+    close(fd);
+    return comand;
 }
 
 // Função para validar o comando "users"
@@ -200,6 +209,12 @@ int validaComandos(char *command){
     // Validar comandos
     if (validateUsersCommand(command)) {
         // Lógica para o comando "users"
+        printf("Lista de Utilizadores:\n");
+        for (int i = 0; i < TAM_CLIENTES; i++) {
+            if (players[i].pid != 0) {
+                printf("player %d %s %d\n", i, players[i].name, players[i].pid);
+            }
+        }
     } else if (validateKickCommand(command)) {
         // Lógica para o comando "kick"
     } else if (validateBotsCommand(command)) {
@@ -212,6 +227,7 @@ int validaComandos(char *command){
         // Lógica para o comando "begin"
     } else if (validateEndCommand(command)) {
         // Lógica para o comando "end"
+        return 0;
     } else {
         printf("Comando desconhecido\n");
     }
@@ -290,7 +306,9 @@ int main() {
 
     while (1)
     {
-        enviaLabirinto();    }
+        enviaLabirinto();    
+        validaComandos(recebeComando());
+    }
     
 
     // Aguarda o término das threads
@@ -304,5 +322,7 @@ int main() {
         exit(EXIT_FAILURE);
     }
 
+    unlink(pipeMotor);
+    unlink(pipeJogoUI);
     return 0;
 }

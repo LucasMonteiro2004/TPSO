@@ -38,6 +38,8 @@ void recebeCoordenadas(int playerX, int playerY, char username[TAM_NOME]) {
         return;
     }
 
+    close(fd);
+
     // Inicializa o modo ncurses
     initscr(); // Inicializa NCurses
     raw(); // entrada de caracteres é passada para o programa imediatamente, sem a necessidade de pressionar Enter
@@ -61,7 +63,7 @@ void recebeCoordenadas(int playerX, int playerY, char username[TAM_NOME]) {
     refresh(); // Atualiza a tela
 
     char comando[TAM_NOME];
-    while (strcmp(comando, "sair") != 0){
+    while (strcmp(comando, "end") != 0){
     
         int ch;
 
@@ -123,7 +125,10 @@ void recebeCoordenadas(int playerX, int playerY, char username[TAM_NOME]) {
             if (comando_ch == ' ') {
                 mvprintw(MAX_LINHAS + 2, 0, "Comando >> ");
                 getstr(comando);
-
+                mkfifo(pipeJogoUI, 0644);
+                int fd = open(pipeJogoUI, O_WRONLY);
+                write(fd, comando, sizeof(comando));
+                close(fd);
                 mvprintw(MAX_LINHAS + 4, 0, "Pressione Enter para retornar ao labirinto");
                 refresh();
                 while ((comando_ch = getch()) != '\n') {
@@ -137,7 +142,6 @@ void recebeCoordenadas(int playerX, int playerY, char username[TAM_NOME]) {
         return;
     }
 
-    close(fd);
 }
 
 void enviaCredenciais(char nome[TAM_NOME]){
